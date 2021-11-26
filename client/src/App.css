@@ -1,0 +1,9 @@
+.App {
+  text-align: center;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
