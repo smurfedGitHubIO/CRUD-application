@@ -24,7 +24,7 @@ app.post('/create', (req, res) => {
 		}
 	});
 });
-
-app.listen(8080, () => {
-	console.log("Server is running.");
+``
+app.listen(3001, () => {
+	console.log("Localhost running at port 3001.");
 });
