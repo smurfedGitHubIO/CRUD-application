@@ -1,30 +1,19 @@
 const express = require('express');
 const app = express();
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const cors = require('cors');
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
-const db = mysql.createConnection({
-	user: 'root',
-	host: 'localhost',
-	password: '',
-	database: 'sample'
-});
+const db = require('./models');
 
-app.post('/create', (req, res) => {
-	const name = req.body.name;
-	const age = req.body.age;
-	db.query('INSERT INTO sample-table (name, age) VALUES (?, ?)', [name, age], (err, results) => {
-		if (err) {
-			console.log(err);
-		} else {
-			res.send("Values inserted.");
-		}
+// Routers
+const postRouter = require('./routes/posts');
+app.use("/posts", postRouter);
+
+db.sequelize.sync().then(() => {
+	app.listen(3002, () => {
+		console.log("Server running on port 3002.");
 	});
-});
-``
-app.listen(3001, () => {
-	console.log("Localhost running at port 3001.");
 });
