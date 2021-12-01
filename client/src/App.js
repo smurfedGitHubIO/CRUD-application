@@ -1,16 +1,20 @@
 import './App.css';
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 function App() {
+  const [listOfPosts, setListOfPosts] = useState([]);
   useEffect(() => {
-    axios.get("localhost:3002/posts").then((response) => {
-      console.log(response);
+    axios.get("http://localhost:3002/posts").then((response) => {
+      setListOfPosts(response.data);
     });
   }, []);
-  return 
-    <div className="App"></div>;
+  return <div className="App">{listOfPosts.map((value, key) => {
+    return <div className="post">
+      <div className="title">{value.name}</div>
+      <div className="body">{value.age}</div>
+    </div>;
+  })}</div>;
 }
 
 export default App;
