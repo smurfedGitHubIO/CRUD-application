@@ -7,17 +7,6 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
-// const db = require('./models');
-
-// Routers
-// const postRouter = require('./routes/posts');
-// app.use("/posts", postRouter);
-//const registeredUsersRouter = require('./routes/registered-users');
-//app.use("/auth", registeredUsersRouter);
-
-// db.sequelize.sync().then(() => {
-// });
-
 const db = mysql.createConnection({
 	user: "root",
 	host: "localhost",
