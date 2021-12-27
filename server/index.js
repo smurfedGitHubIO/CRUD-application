@@ -7,6 +7,17 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
+// const db = require('./models');
+
+// Routers
+// const postRouter = require('./routes/posts');
+// app.use("/posts", postRouter);
+//const registeredUsersRouter = require('./routes/registered-users');
+//app.use("/auth", registeredUsersRouter);
+
+// db.sequelize.sync().then(() => {
+// });
+
 const db = mysql.createConnection({
 	user: "root",
 	host: "localhost",
@@ -40,7 +51,7 @@ db.connect(() => {
 			query = "CREATE TABLE IF NOT EXISTS `second-game-stats`(`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `date` VARCHAR(255), `level` INT, `time` INT, `moves` VARCHAR(255), PRIMARY KEY (`id`))";
 			db.query(query);
 			//third game stats
-			query = "CREATE TABLE IF NOT EXISTS `third-game-stats`(`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `date` VARCHAR(255), `level` INT, `time` INT, PRIMARY KEY (`id`))";
+			query = "CREATE TABLE IF NOT EXISTS `third-game-stats`(`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `date` VARCHAR(255), `level` INT, `time` INT, `character` VARCHAR(255), `wrong-clicks` INT, PRIMARY KEY (`id`))";
 			db.query(query);
 		}
 	});
@@ -190,19 +201,45 @@ app.post('/login_authentication', (req, res) => {
 	);
 });
 
+//third-game-stats getter
+
 app.post('/get_data', (req, res) => {
 	const name = req.body.name;
-	var lst;
-	const query = "SELECT * FROM random WHERE name = " + name;
+	var res_values = []; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
+	const query = "SELECT * FROM third-game-stats WHERE name = " + name;
 	db.query(query, function (err, result){
 		if(err){
 			console.log(err);
 		}
 		else{
+			var games_per_level = [0,0,0,0,0,0,0];
+			var time_per_level = [0,0,0,0,0,0,0];
+			var total_play_time = 0;
+			var characters = [];
+			var wrong_clicks = [0,0,0,0,0,0,0];
 			res.send(result);
+			for(var i=0; i<result.length; i++){
+				var level = result[i].level;
+				var time = result[i].time;
+				var character = result[i].character;
+				var wrong-clicks = result[i].wrong-clicks;
+				games_per_level[level-1] += 1;
+				time_per_level[level-1] += time;
+				var checker = false;
+				for(var j=0; j<characters.length; j++){
+					if(characters[i] == character){
+						checker = true;
+					}
+				}
+				if(!checker){
+					characters.push(character);
+				}
+				wrong_clicks[level-1] += wrong-clicks;
+			}
 		}
 	})
 });
+//query = "CREATE TABLE IF NOT EXISTS `third-game-stats`(`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `date` VARCHAR(255), `level` INT, `time` INT, `character` VARCHAR(255), `wrong-clicks` INT, PRIMARY KEY (`id`))";
 
 app.listen(3002, () => {
 	console.log("Server running on port 3002.");
