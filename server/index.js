@@ -203,7 +203,7 @@ app.post('/login_authentication', (req, res) => {
 
 //third-game-stats getter
 
-app.post('/get_data', (req, res) => {
+app.post('/get_third_game_data', (req, res) => {
 	const name = req.body.name;
 	var res_values = []; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
 	const query = "SELECT * FROM third-game-stats WHERE name = " + name;
@@ -215,8 +215,10 @@ app.post('/get_data', (req, res) => {
 			var games_per_level = [0,0,0,0,0,0,0];
 			var time_per_level = [0,0,0,0,0,0,0];
 			var total_play_time = 0;
+			var total_number_of_games = 0;
 			var characters = [];
 			var wrong_clicks = [0,0,0,0,0,0,0];
+			var attempts_per_level = [0,0,0,0,0,0,0];
 			res.send(result);
 			for(var i=0; i<result.length; i++){
 				var level = result[i].level;
@@ -236,6 +238,14 @@ app.post('/get_data', (req, res) => {
 				}
 				wrong_clicks[level-1] += wrong-clicks;
 			}
+			var average_time_per_level = [0,0,0,0,0,0,0];
+			for(var i=0; i<7; i++){
+				average_time_per_level[i] = time_per_level[i]/games_per_level[i];
+				total_play_time += time_per_level[i];
+				total_number_of_games += games_per_level[i];
+			}
+			res_values = [average_time_per_level, time_per_level, total_play_time, total_play_time/total_number_of_games,characters,wrong_clicks];
+			res.send(res_values);
 		}
 	})
 });
