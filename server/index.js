@@ -201,12 +201,12 @@ app.post('/login_authentication', (req, res) => {
 	);
 });
 
-//second-game-stats getter (communication)
+//first-game-stats getter (emotional)
 
-app.post('/get_second_game_data', (req, res) => {
+app.post('/get_first_game_data', (req, res) => {
 	const name = req.body.name;
-	var res_values = []; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
-	const query = "SELECT * FROM second-game-stats WHERE name = " + name;
+	var res_values;
+	const query = "SELECT * FROM first-game-stats WHERE name = " + name;
 	db.query(query, function(err, result){
 		if(err){
 			console.log(err);
@@ -232,16 +232,53 @@ app.post('/get_second_game_data', (req, res) => {
 			res_values = {};
 			res.send(res_values);
 		}
-	})
+	});
 });
 
-//query = "CREATE TABLE IF NOT EXISTS `second-game-stats`(`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `date` VARCHAR(255), `level` INT, `time` INT, `moves` INT, `wrong-prompts` INT, PRIMARY KEY (`id`))";
+//second-game-stats getter (communication)
+
+app.post('/get_second_game_data', (req, res) => {
+	const name = req.body.name;
+	var res_values; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
+	const query = "SELECT * FROM second-game-stats WHERE name = " + name;
+	db.query(query, function(err, result){
+		if(err){
+			console.log(err);
+		}
+		else{
+			var games_per_level = [0,0,0,0,0,0,0];
+			var total_time_per_level = [0,0,0,0,0,0,0];
+			var total_play_time = 0;
+			var total_game_attempts = 0;
+			var wrong_prompts_per_level = [0,0,0,0,0,0,0];
+			var attempts_per_level = [0,0,0,0,0,0,0];
+			for(var i=0; i<result.length; i++){
+				var level = result.level;
+				var time = result.time;
+				var wrong_prompts = result.wrong-prompts;
+				games_per_level[level-1] += 1;
+				total_time_per_level[level-1] += time;
+				total_play_time += time;
+				total_game_attempts += 1;
+				attempts_per_level[level-1] += 1;
+				wrong_prompts_per_level[level-1] += wrong_prompts;
+			}
+			var average_time_per_level = [0,0,0,0,0,0,0];
+			for(var i=0; i<7; i++){
+				average_time_per_level[i] = total_time_per_level[i]/attempts_per_level[i];
+			}
+			res_values = {total_play_time: total_play_time, total_average_play_time: total_play_time/total_game_attempts, average_time_per_level: average_time_per_level, total_time_per_level: total_time_per_level, wrong_prompts_per_level: wrong_prompts_per_level, attempts_per_level: attempts_per_level};
+			res.send(res_values);
+		}
+	});
+});
+//hatiin pa yung wrong prompts
 
 //third-game-stats getter (behavioural)
 
 app.post('/get_third_game_data', (req, res) => {
 	const name = req.body.name;
-	var res_values = []; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
+	var res_values; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
 	const query = "SELECT * FROM third-game-stats WHERE name = " + name;
 	db.query(query, function (err, result){
 		if(err){
@@ -283,7 +320,7 @@ app.post('/get_third_game_data', (req, res) => {
 			res_values = {average_time_per_level:average_time_per_level, time_per_level:time_per_level, total_play_time:total_play_time, total_average_play_time: total_play_time/total_number_of_games,characters:characters,wrong_clicks:wrong_clicks};
 			res.send(res_values);
 		}
-	})
+	});
 });
 //di ko gets Number of attempts per level (kasi pwede balikan ang completed na) – average per game use and total since account creation
 
