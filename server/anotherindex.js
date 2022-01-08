@@ -23,12 +23,15 @@ app.post('/get_third_game_data', (req, res) => {
 			var characters = [];
 			var wrong_clicks = [0,0,0,0,0,0,0];
 			var attempts_per_level = [0,0,0,0,0,0,0];
-			res.send(result);
+			var play_time_list = []; //list that contains all time taken, excludes outlier game times (0 second game times)
 			for(var i=0; i<result.length; i++){
 				var level = result[i].level;
 				var time = result[i].time;
 				var character = result[i].character;
 				var wrong-clicks = result[i].wrong-clicks;
+				if(time != 0){
+					play_time_list.push(time);
+				}
 				games_per_level[level-1] += 1;
 				time_per_level[level-1] += time;
 				var checker = false;
@@ -42,6 +45,9 @@ app.post('/get_third_game_data', (req, res) => {
 				}
 				wrong_clicks[level-1] += wrong-clicks;
 			}
+			//check game time if increasing, decreasing or neither
+
+			//end of check
 			var average_time_per_level = [0,0,0,0,0,0,0];
 			for(var i=0; i<7; i++){
 				average_time_per_level[i] = time_per_level[i]/games_per_level[i];
