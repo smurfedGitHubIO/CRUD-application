@@ -147,7 +147,8 @@ app.post('/get_second_game_data', (req, res) => {
 			var characters = [];
 			var wrong_clicks = [0,0,0,0,0,0,0];
 			var attempts_per_level = [0,0,0,0,0,0,0];
-			var playtime_list_per_level = [[],[],[],[],[],[],[]]; //list that contains all time taken
+			var playtime_list_per_level_average = [[],[],[],[],[],[],[]];
+			var playtime_list_per_level_total = [[],[],[],[],[],[],[]];
 			var latest_date;
 			var play_counter_for_current_date = 0, time_counter_for_current_date = 0;
 			//end of relevant variables
@@ -169,9 +170,10 @@ app.post('/get_second_game_data', (req, res) => {
 						time_counter_for_current_date += time;
 					}
 					else{
-						play_counter_for_current_date = 1;
-						playtime_list_per_level[level-1].push(time_counter_for_current_date/play_counter_for_current_date);
+						playtime_list_per_level_average[level-1].push(time_counter_for_current_date/play_counter_for_current_date);
+						playtime_list_per_level_total[level-1].push(time_counter_for_current_date);
 						time_counter_for_current_date = time;
+						play_counter_for_current_date = 1;
 					}
 				}
 				if(time != 0){
@@ -191,6 +193,9 @@ app.post('/get_second_game_data', (req, res) => {
 				wrong_clicks[level-1] += wrong-clicks;
 			}
 			//end of main loop for all values in database
+			//analysis
+
+			//end of analysis
 			var average_time_per_level = [0,0,0,0,0,0,0];
 			for(var i=0; i<7; i++){
 				average_time_per_level[i] = time_per_level[i]/games_per_level[i];
