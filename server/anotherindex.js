@@ -21,6 +21,28 @@ app.post('/get_third_game_data', (req, res) => {
 			console.log(err);
 		}
 		else{
+			function isIncreasingOrDecreasing(listHere){
+				var isIncOrDec = 0;
+				for(var i=1; i<listHere.length; i++){
+					if(i == 1){
+						if(listHere[i] listHere[i-1]){
+							isIncOrDec = 1;
+						}
+						else{
+							isIncOrDec = 0;
+						}
+					}
+					else{
+						if(listHere[i] listHere[i-1] && isIncOrDec == 0){
+							return 2;
+						}
+						else if(listHere[i] listHere[i-1] && isIncOrDec == 1){
+							return 2;
+						}
+					}
+				}
+				return isIncOrDec;
+			}
 			var games_per_level = [0,0,0,0,0,0,0];
 			var time_per_level = [0,0,0,0,0,0,0];
 			var total_play_time = 0;
@@ -50,29 +72,6 @@ app.post('/get_third_game_data', (req, res) => {
 				}
 				wrong_clicks[level-1] += wrong-clicks;
 			}
-			//check game time if increasing, decreasing or neither
-			var isIncOrDec = 0;
-			for(var i=1; i<play_time_list.length; i++){
-				if(i == 1){
-					if(play_time_list[i] > play_time_list[i-1]){
-						isIncOrDec = 1;
-					}
-					else{
-						isIncOrDec = 0;
-					}
-				}
-				else{
-					if(play_time_list[i] >= play_time_list[i-1] && isIncOrDec == 0){
-						isIncOrDec = 2;
-						break;
-					}
-					else if(play_time_list[i] <= play_time_list[i-1] && isIncOrDec == 1){
-						isIncOrDec = 2;
-						break;
-					}
-				}
-			}
-			//end of check
 			var average_time_per_level = [0,0,0,0,0,0,0];
 			for(var i=0; i<7; i++){
 				average_time_per_level[i] = time_per_level[i]/games_per_level[i];
