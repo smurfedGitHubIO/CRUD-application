@@ -91,6 +91,7 @@ app.post('/get_second_game_data', (req, res) => {
 	const analysis = {
 		average_play_time_per_level : ["The decreasing average time that this player spends in playing this level per game use may mean that he/she is getting less interested in playing this particular level, which may be due to the player being bored at doing something repeatedly after some time. On the other hand, it may also mean that the player has progressively improved his/her focus while completing a task, thus he/she spends lesser time in order to complete this level; this may mean that the player is getting less easy to distract.", "The increasing average time that this player spends in playing this level per game use may mean that he/she is getting more interested in playing this particular level, which may be due to the player being challenged by the difficulty of this level; this may mean that the player likes to challenge himself/herself and that he/she is not afraid to do a task that is hard for him/her. It may also mean that the player is struggling to improve his/her focus while completing a task, thus he/she spends more time in order to complete this level; this may mean that the player is still easy to distract.", "Since the amount of time that this player spends in playing this level per game use shows neither an increasing nor decreasing pattern, it may mean that the player gets distracted by external factors while playing the game (e.g. he/she does something else while playing the game at some times), which may mean that the player still lacks focus and can be easily distracted while doing a task. It may also mean that the player does not seriously play this game or that his/her focus is still inconsistent."]
 	};
+	const daysPerMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
 	const name = req.body.name;
 	var res_values; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
 	const query = "SELECT * FROM second-game-stats WHERE name = " + name;
@@ -99,6 +100,7 @@ app.post('/get_second_game_data', (req, res) => {
 			console.log(err);
 		}
 		else{
+			//relevant functions
 			function isIncreasingOrDecreasing(listHere){
 				var isIncOrDec = 0;
 				for(var i=1; i<listHere.length; i++){
@@ -121,6 +123,22 @@ app.post('/get_second_game_data', (req, res) => {
 				}
 				return isIncOrDec;
 			}
+			function dateParser(date){
+				var dateParsed = [];
+				var current = "";
+				for(var i=0; i<date.length; i++){
+					if(date[i] == '-'){
+						dateParsed.push(current);
+						current = "";
+					}
+					else{
+						current += date[i];
+					}
+				}
+				dateParsed.push(current);
+				return dateParsed;
+			}
+			//end of relevant functions
 			var number_of_games_per_level = [0,0,0,0,0,0,0];
 			var time_per_level = [0,0,0,0,0,0,0];
 			var total_play_time = 0;
@@ -129,11 +147,13 @@ app.post('/get_second_game_data', (req, res) => {
 			var wrong_clicks = [0,0,0,0,0,0,0];
 			var attempts_per_level = [0,0,0,0,0,0,0];
 			var play_time_list = []; //list that contains all time taken, excludes outlier game times (0 second game times)
+			var latest_date = [];
 			for(var i=0; i<result.length; i++){
 				var level = result[i].level;
 				var time = result[i].time;
 				var character = result[i].character;
 				var wrong-clicks = result[i].wrong-clicks;
+				var date = dateParser(result[i].date);
 				if(time != 0){
 					play_time_list.push(time);
 				}
