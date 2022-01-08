@@ -57,6 +57,8 @@ db.connect(() => {
 	});
 });
 
+//take note, dapat yung date in terms of month-day-year
+
 //idk, prolly for experimenting noh?
 
 app.post('/create', (req, res) => {
