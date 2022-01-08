@@ -139,6 +139,7 @@ app.post('/get_second_game_data', (req, res) => {
 				return dateParsed;
 			}
 			//end of relevant functions
+			//relevant variables
 			var number_of_games_per_level = [0,0,0,0,0,0,0];
 			var time_per_level = [0,0,0,0,0,0,0];
 			var total_play_time = 0;
@@ -146,16 +147,35 @@ app.post('/get_second_game_data', (req, res) => {
 			var characters = [];
 			var wrong_clicks = [0,0,0,0,0,0,0];
 			var attempts_per_level = [0,0,0,0,0,0,0];
-			var play_time_list = []; //list that contains all time taken, excludes outlier game times (0 second game times)
-			var latest_date = [];
+			var playtime_list_per_level = [[],[],[],[],[],[],[]]; //list that contains all time taken
+			var latest_date;
+			var play_counter_for_current_date = 0, time_counter_for_current_date = 0;
+			//end of relevant variables
+			//main loop for all values in database
 			for(var i=0; i<result.length; i++){
 				var level = result[i].level;
 				var time = result[i].time;
 				var character = result[i].character;
 				var wrong-clicks = result[i].wrong-clicks;
-				var date = dateParser(result[i].date);
+				var date = result[i].date;
+				if(i == 0){
+					latest_date = date;
+					play_counter_for_current_date += 1;
+					time_counter_for_current_date += time;
+				}
+				else{
+					if(date == latest_date){
+						play_counter_for_current_date += 1;
+						time_counter_for_current_date += time;
+					}
+					else{
+						play_counter_for_current_date = 1;
+						playtime_list_per_level[level-1].push(time_counter_for_current_date/play_counter_for_current_date);
+						time_counter_for_current_date = time;
+					}
+				}
 				if(time != 0){
-					play_time_list.push(time);
+					playtime_list_per_level[level-1].push(time);
 				}
 				games_per_level[level-1] += 1;
 				time_per_level[level-1] += time;
@@ -170,6 +190,7 @@ app.post('/get_second_game_data', (req, res) => {
 				}
 				wrong_clicks[level-1] += wrong-clicks;
 			}
+			//end of main loop for all values in database
 			var average_time_per_level = [0,0,0,0,0,0,0];
 			for(var i=0; i<7; i++){
 				average_time_per_level[i] = time_per_level[i]/games_per_level[i];
