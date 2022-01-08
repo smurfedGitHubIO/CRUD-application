@@ -8,6 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 app.post('/get_third_game_data', (req, res) => {
+	const analysis = {total_play_time : [""]};
 	const name = req.body.name;
 	var res_values; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
 	const query = "SELECT * FROM third-game-stats WHERE name = " + name;
@@ -46,7 +47,10 @@ app.post('/get_third_game_data', (req, res) => {
 				wrong_clicks[level-1] += wrong-clicks;
 			}
 			//check game time if increasing, decreasing or neither
+			var isIncOrDec = 0;
+			for(var i=0; i<play_time_list.length; i++){
 
+			}
 			//end of check
 			var average_time_per_level = [0,0,0,0,0,0,0];
 			for(var i=0; i<7; i++){
