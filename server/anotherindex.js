@@ -84,11 +84,11 @@ app.post('/get_first_game_data', (req, res) => {
 			//end of relevant variables
 			//main loop function
 			for(var i=0; i<result.length; i++){
+				//note: change level to house
 				var level = result[i].level;
 				var time = result[i].time;
 				var date = result[i].date;
 				var character = result[i].character;
-				var try_count = result[i].tries;
 				var wrong_answers = result[i].wrong-answers;
 				var minigame_time = result[i].minigame-time;
 				var win = result[i].win;
@@ -105,7 +105,6 @@ app.post('/get_first_game_data', (req, res) => {
 				else{
 					characters_chosen_count += 1;
 				}
-				//edit pa pala tong try count shiz
 				if(i == 0){
 					latest_date = date;
 					if(win){
@@ -128,14 +127,19 @@ app.post('/get_first_game_data', (req, res) => {
 					}
 					else{
 						latest_date = date;
-						tries_before_completion_per_house[level-1].push(try_counter);
-						try_counter = 0;
+						if(win){
+							tries_before_completion_per_house[level-1].push(try_counter);
+							try_counter = 0;
+						}
+						else{
+							try_counter += 1;
+						}
 					}
 				}
-				
-				//end of edit
+				number_of_wrong_answers_per_house[level-1].push(wrong_answers);
 
 			}
+			//to do: wrong answers + analysis
 			// var average_time_per_level = [0,0,0,0,0,0,0];
 			// for(var i=0; i<7; i++){
 			// 	average_time_per_level[i] = time_per_level[i]/games_per_level[i];
