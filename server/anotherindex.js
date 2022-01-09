@@ -80,7 +80,7 @@ app.post('/get_first_game_data', (req, res) => {
 			var number_of_wrong_answers_per_house = [[], [], [], [], [], []];
 			var number_of_games_per_house = [[], [], [], [], [], []];
 			var latest_date;
-			var try_counter = 0;
+			var try_counter = 0, wrong_answers_counter = 0;
 			//end of relevant variables
 			//main loop function
 			for(var i=0; i<result.length; i++){
@@ -114,6 +114,7 @@ app.post('/get_first_game_data', (req, res) => {
 					else{
 						try_counter += 1;
 					}
+					wrong_answers_counter = wrong_answers;
 				}
 				else{
 					if(date == latest_date){
@@ -124,9 +125,11 @@ app.post('/get_first_game_data', (req, res) => {
 						else{
 							try_counter += 1;
 						}
+						wrong_answers_counter += wrong_answers;
 					}
 					else{
 						latest_date = date;
+						number_of_wrong_answers_per_house[level-1].push(wrong_answers_counter/try_counter);
 						if(win){
 							tries_before_completion_per_house[level-1].push(try_counter);
 							try_counter = 0;
@@ -134,10 +137,9 @@ app.post('/get_first_game_data', (req, res) => {
 						else{
 							try_counter += 1;
 						}
+						wrong_answers_counter = wrong_answers;
 					}
 				}
-				number_of_wrong_answers_per_house[level-1].push(wrong_answers);
-
 			}
 			//to do: wrong answers + analysis
 			// var average_time_per_level = [0,0,0,0,0,0,0];
@@ -172,6 +174,7 @@ app.post('/get_second_game_data', (req, res) => {
 			console.log(err);
 		}
 		else{
+			//relevant functions
 			function isIncreasingOrDecreasing(listHere){
 				var isIncOrDec = 0;
 				if(listHere.length == 1){
@@ -197,14 +200,10 @@ app.post('/get_second_game_data', (req, res) => {
 				}
 				return isIncOrDec;
 			}
-			var games_per_level = [0,0,0,0,0,0,0];
-			var time_per_level = [0,0,0,0,0,0,0];
-			var total_play_time = 0;
-			var total_number_of_games = 0;
-			var characters = [];
-			var wrong_clicks = [0,0,0,0,0,0,0];
-			var attempts_per_level = [0,0,0,0,0,0,0];
-			var play_time_list = []; //list that contains all time taken, excludes outlier game times (0 second game times)
+			//end of relevant functions
+			//relevant variables
+			
+			//end of relevant variables
 			for(var i=0; i<result.length; i++){
 				var level = result[i].level;
 				var time = result[i].time;
