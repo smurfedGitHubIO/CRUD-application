@@ -7,6 +7,7 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
+//emotional game
 app.post('/get_third_game_data', (req, res) => {
 	const houses = [];
 	const characters = [];
@@ -86,6 +87,7 @@ app.post('/get_third_game_data', (req, res) => {
 	});
 });
 
+//behavioural game
 app.post('/get_second_game_data', (req, res) => {
 	const characters = [];
 	const analysis = {
@@ -207,6 +209,87 @@ app.post('/get_second_game_data', (req, res) => {
 			//analysis
 
 			//end of analysis
+			var average_time_per_level = [0,0,0,0,0,0,0];
+			for(var i=0; i<7; i++){
+				average_time_per_level[i] = time_per_level[i]/games_per_level[i];
+				total_play_time += time_per_level[i];
+				total_number_of_games += games_per_level[i];
+			}
+			res_values = {average_time_per_level:average_time_per_level, time_per_level:time_per_level, total_play_time:total_play_time, total_average_play_time: total_play_time/total_number_of_games,characters:characters,wrong_clicks:wrong_clicks};
+			res.send(res_values);
+		}
+	});
+});
+
+//communication game
+app.post('/get_first_game_data', (req, res) => {
+	const houses = [];
+	const characters = [];
+	const analysis = {
+		"overall_total_play_time" : ["The decreasing time that this player spends in playing this game per website use may mean that the player's ability to communicate and work with other people has improved and that he/she has needed less time to complete the levels. On the other hand, this may also mean that he/she is losing interest in playing the game as time goes by, maybe because he/she finds the game too easy, or because he/she is struggling to complete the game— these cases may mean that the player is either improving his/her communication skills or he/she is struggling to communicate with others or with a particular person.", "The increasing time that this player spends in playing this game per website use may mean that the player's ability to communicate and work with other people has not yet improved such that he/she has still needs more time to complete the levels. On the other hand, this may also mean that the player is gaining interest in playing the game as time goes by, maybe because he/she finds this game challenging or fun; this may mean that the player likes to challenge himself/herself or he/she is enjoying the game due to its collaborative nature.", "Since the amount of time that the player spends in playing the game shows neither an increasing nor decreasing pattern, it may mean that the player gets distracted by external factors while playing the game (e.g. he/she does something else while playing the game at some times), which may mean that the player lacks focus and can be easily distracted while doing a task. The collaborative nature of the game may also be a factor since the player and his/her playmate can be distracted by each other."],
+		"average_play_time_per_level" : ["The decreasing average time that this player spends in playing this level per game use may mean that he/she is getting less interested in playing this particular level as time goes by, which may be due to the player being bored at doing something repeatedly after some time, or perhaps due to this level becoming easier for him/her every time he/she attempts it. It may also mean that the player's communication skills are progressively improving and that his/her ability to do tasks with other people has improved. Lastly, it may mean that the player has already learned and memorized the positioning of the puzzle pieces, which may indicate that the player is a fast learner and that he/she has good memorization skills.", "The increasing average time that this player spends in playing this level per game use may mean that he/she is getting more interested in playing this particular level as time goes by, which may be due to the player being challenged by this level; in this case, it may mean that the player likes to challenge himself/herself. On the other hand, it may also mean that the player is struggling to communicate and cooperate with his/her playmate, which may mean that his/her communication skills have not yet improved. This may also mean that he/she is struggling to memorize and learn the positions of the puzzle pieces, which may indicate that the player is a slow learner or that he/she does not have good memorization skills.", "Since the amount of time that this player spends in playing this level per game use shows neither an increasing nor decreasing pattern, it may mean that the player gets distracted by external factors while playing the game (e.g. he/she does something else while playing the game at some times), which may mean that the player lacks focus and can be easily distracted while doing a task. It may also mean that the player and/or his/her playmate does not seriously play this game or that his/her focus is still inconsistent. The collaborative nature of the game may also be a factor since the player and his/her playmate can be distracted by each other."],
+		"average_number_of_wrong_prompts_per_level" : ["The decreasing average number of wrong prompts per attempt on this level may mean that the player is progressively learning how to properly communicate and cooperate with other people in doing a task. This may mean that the player's communicative skills are improving. Also, this may mean that the player is progressively memorizing and learning the positions of the puzzle pieces, which may indictate that the player has good memorization skills.", "The increasing average number of wrong prompts per attempt on this level may mean that the player is struggling to learn how to properly communicate and cooperate with other people in doing a task. This may mean that the player's communication skills are not yet improving. Also, this may mean that the player, and perhaps his/her playmate, is struggling to memorize and learn the positions of the puzzle pieces, which may indicate that the player does not have good memorization skills.", "Since the average number of wrong prompts per attempt on this level shows neither an increasing nor decreasing pattern, it may mean that the player gets distracted by external factors while playing the game (e.g. he/she does something else while playing the game at some times), which may mean that the player lacks focus and can be easily distracted while doing a task. It may also mean that the player and/or his/her playmate does not seriously play this game or that his/her focus is still inconsistent. The collaborative nature of the game may also be a factor since the player and his/her playmate can be distracted by each other."],
+		"number_of_attempts_per_level" : ["The decreasing number of attempts on this level may mean that this player is losing interest in playing this level, perhaps because he/she is already bored with playing on this level due to its easy difficulty; this may mean that the player's communication and cooperation skills are improving. On the other hand, it may also mean that the player is avoiding this level due to its hard difficulty; in this case, it may mean that the player is avoiding challenges and that he/she avoids tasks that are hard for him to do.", "The increasing number of attempts on this level may mean that this player is gaining interest in playing this level, perhaps because he/she finds this level fun or challenging; this may mean that the player likes to face challenges and that he/she wants to improve himself/herself even more. On the other hand, it may also mean that the player is repeatedly playing this level due to its easy difficulty; in this case, it may mean that the player is avoiding challenges and that he/she prefers to do tasks that are easy for him to do.", "Since the number of attempts on this level shows neither an increasing nor decreasing pattern, it may mean that there are times that the player finds this level easy or fun, while there are also times that he/she does not. In other words, the player's perception on this level is inconsistent."]
+	};
+	const name = req.body.name;
+	var res_values; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
+	const query = "SELECT * FROM third-game-stats WHERE name = " + name;
+	db.query(query, function (err, result){
+		if(err){
+			console.log(err);
+		}
+		else{
+			function isIncreasingOrDecreasing(listHere){
+				var isIncOrDec = 0;
+				for(var i=1; i<listHere.length; i++){
+					if(i == 1){
+						if(listHere[i] > listHere[i-1]){
+							isIncOrDec = 1;
+						}
+						else{
+							isIncOrDec = 0;
+						}
+					}
+					else{
+						if(listHere[i] >= listHere[i-1] && isIncOrDec == 0){
+							return 2;
+						}
+						else if(listHere[i] <= listHere[i-1] && isIncOrDec == 1){
+							return 2;
+						}
+					}
+				}
+				return isIncOrDec;
+			}
+			var games_per_level = [0,0,0,0,0,0,0];
+			var time_per_level = [0,0,0,0,0,0,0];
+			var total_play_time = 0;
+			var total_number_of_games = 0;
+			var characters = [];
+			var wrong_clicks = [0,0,0,0,0,0,0];
+			var attempts_per_level = [0,0,0,0,0,0,0];
+			var play_time_list = []; //list that contains all time taken, excludes outlier game times (0 second game times)
+			for(var i=0; i<result.length; i++){
+				var level = result[i].level;
+				var time = result[i].time;
+				var character = result[i].character;
+				var wrong-clicks = result[i].wrong-clicks;
+				if(time != 0){
+					play_time_list.push(time);
+				}
+				games_per_level[level-1] += 1;
+				time_per_level[level-1] += time;
+				var checker = false;
+				for(var j=0; j<characters.length; j++){
+					if(characters[i] == character){
+						checker = true;
+					}
+				}
+				if(!checker){
+					characters.push(character);
+				}
+				wrong_clicks[level-1] += wrong-clicks;
+			}
 			var average_time_per_level = [0,0,0,0,0,0,0];
 			for(var i=0; i<7; i++){
 				average_time_per_level[i] = time_per_level[i]/games_per_level[i];
