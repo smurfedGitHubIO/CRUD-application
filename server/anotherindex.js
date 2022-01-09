@@ -80,6 +80,7 @@ app.post('/get_first_game_data', (req, res) => {
 			var number_of_wrong_answers_per_house = [[], [], [], [], [], []];
 			var number_of_games_per_house = [[], [], [], [], [], []];
 			var latest_date;
+			var try_counter = 0;
 			//end of relevant variables
 			//main loop function
 			for(var i=0; i<result.length; i++){
@@ -107,19 +108,31 @@ app.post('/get_first_game_data', (req, res) => {
 				//edit pa pala tong try count shiz
 				if(i == 0){
 					latest_date = date;
-					if(win == 1){
-						
+					if(win){
+						tries_before_completion_per_house[level-1].push(try_counter);
+						try_counter = 0;
+					}
+					else{
+						try_counter += 1;
 					}
 				}
 				else{
 					if(date == latest_date){
-
+						if(win){
+							tries_before_completion_per_house[level-1].push(try_counter);
+							try_counter = 0;
+						}
+						else{
+							try_counter += 1;
+						}
 					}
 					else{
 						latest_date = date;
+						tries_before_completion_per_house[level-1].push(try_counter);
+						try_counter = 0;
 					}
 				}
-				tries_before_completion_per_house[level-1].push(try_count);
+				
 				//end of edit
 
 			}
