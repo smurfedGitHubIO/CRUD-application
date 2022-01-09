@@ -20,7 +20,6 @@ app.post('/get_first_game_data', (req, res) => {
 		"average_number_of_wrong_answers_per_house" : ["The decreasing average number of wrong answers per attempt may mean that this player is progressively learning how to properly respond to people when they are feeling joyous (change na lang based sa emotion ng house). This may also mean that the player is a fast learner since he/she can learn or remember the choices that should not be chosen.", "The increasing average number of wrong answers per attempt may mean that this player is struggling to learn how to properly respond to people when they are feeling joyous (change na lang based sa emotion ng house). This may also mean that the player is a slow learner since he/she cannot easily learn or remember the choices that should not be chosen.", "Since the average number of wrong answers per attempt that the player commits to this house shows neither an increasing nor decreasing pattern, it may mean that the player is still struggling to remember or learn how to respond to people when they are feeling joyous (change na lang based sa emotion ng house). It may also mean that the player plays this house randomly or that he/she does not seriously play it.", "Insufficient data."], 
 	};
 	const name = req.body.name;
-	var res_values; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
 	const query = "SELECT * FROM third-game-stats WHERE name = " + name;
 	db.query(query, function (err, result){
 		if(err){
@@ -141,6 +140,26 @@ app.post('/get_first_game_data', (req, res) => {
 					}
 				}
 			}
+			//analysis
+			var result_values = {"mini-game-time" : [timer_per_minigame, analysis["mini_game_playtime"][isIncOrDec(timer_per_minigame)]],
+			"house-play-time-house-anger" : [time_per_house_win_or_lose[0], analysis["per_house_total_play_time"][isIncOrDec(time_per_house_win_or_lose[0])]],
+			"house-play-time-house-disgust" : [time_per_house_win_or_lose[1], analysis["per_house_total_play_time"][isIncOrDec(time_per_house_win_or_lose[1])]],
+			"house-play-time-house-fear" : [time_per_house_win_or_lose[2], analysis["per_house_total_play_time"][isIncOrDec(time_per_house_win_or_lose[2])]],
+			"house-play-time-house-joy" : [time_per_house_win_or_lose[3], analysis["per_house_total_play_time"][isIncOrDec(time_per_house_win_or_lose[3])]],
+			"house-play-time-house-sadness" : [time_per_house_win_or_lose[4], analysis["per_house_total_play_time"][isIncOrDec(time_per_house_win_or_lose[4])]],
+			"house-play-time-house-surprise" : [time_per_house_win_or_lose[5], analysis["per_house_total_play_time"][isIncOrDec(time_per_house_win_or_lose[5])]],
+			"house-play-time-win-only-house-anger" : [time_per_house_win_only[0], analysis["winning_games_play_time"][isIncOrDec(time_per_house_win_only[0])]],
+			"house-play-time-win-only-house-disgust" : [time_per_house_win_only[1], analysis["winning_games_play_time"][isIncOrDec(time_per_house_win_only[1])]],
+			"house-play-time-win-only-house-fear" : [time_per_house_win_only[2], analysis["winning_games_play_time"][isIncOrDec(time_per_house_win_only[2])]],
+			"house-play-time-win-only-house-joy" : [time_per_house_win_only[3], analysis["winning_games_play_time"][isIncOrDec(time_per_house_win_only[3])]],
+			"house-play-time-win-only-house-sadness" : [time_per_house_win_only[4], analysis["winning_games_play_time"][isIncOrDec(time_per_house_win_only[4])]],
+			"house-play-time-win-only-house-surprise" : [time_per_house_win_only[5], analysis["winning_games_play_time"][isIncOrDec(time_per_house_win_only[5])]],
+			"game-play-time" : [, analysis[][]],
+			"character-chosen" : [, analysis["character_chosen"][characters_chosen_count-1]],
+			"tries-before-succession" : [, analysis[][]],
+			"wrong-answers-per-attempt" : [, analysis[][]]};
+			//[a,b] = [data, analysis]
+			//end of analysis
 			//to do: wrong answers + analysis
 			// var average_time_per_level = [0,0,0,0,0,0,0];
 			// for(var i=0; i<7; i++){
@@ -202,7 +221,12 @@ app.post('/get_second_game_data', (req, res) => {
 			}
 			//end of relevant functions
 			//relevant variables
-			
+			var overall_total_play_time = [];
+			var total_play_time_per_level = [[],[],[],[],[],[],[]];
+			var wrong_prompts_per_level = [[],[],[],[],[],[],[]];
+			var play_count_per_level = [[],[],[],[],[],[],[]];
+			var attempts_per_level = [[],[],[],[],[],[],[]];
+
 			//end of relevant variables
 			for(var i=0; i<result.length; i++){
 				var level = result[i].level;
