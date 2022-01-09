@@ -15,6 +15,7 @@ app.post('/get_first_game_data', (req, res) => {
 		"mini_game_playtime" : ["The decreasing time that this player spends in playing the mini-game per game use may mean that he/she is progressively learning about the concept of the six basic emotions. This may also mean that he/she is a fast learner, or that he/she just does not want to do the same thing repeatedly (easy to become bored at something done repeatedly), which may be because he/she does not enjoy it.", "The increasing time that this player spends in playing the mini-game per game use may mean that he/she is struggling to learn about the concept of the six basic emotions such that he/she needs to be familiarized about it repeatedly. This may also mean that he/she is a slow learner, or that he/she just wants to do the same thing repeatedly because he/she enjoys it.", "Since the amount of time that this player spends in playing the mini-game per game use shows neither an increasing nor decreasing pattern, it may mean that the player is struggling to remember or learn about the concepts of the six basic emotions. It may also mean that the player does not seriously play it or the player does something else at some times, which can be both caused by the player being easily distracted.", "Insufficient data."],
 		"per_house_total_play_time" : ["The decreasing time that this player spends in playing this house per game use may mean that he/she is getting less interested in playing this particular house, which may be due to the player being bored at doing something repeatedly after some time. It may also mean that the player has progressively learned how to respond to people when they are feeling joyous (change na lang based sa emotion ng house), thus he/she spends lesser time in playing this house; this may mean that he/she is a fast learner.", "The increasing time that this player spends in playing this house per game use may mean that he/she is getting more interested in playing this particular house, which may be due to the player being challenged by this house. On the other hand, it may mean that the player is struggling to learn how to respond to people when they are feeling joyous (change na lang based sa emotion ng house); this may mean that the player is a slow learner.", "Since the amount of time that this player spends in playing this house per game use shows neither an increasing nor decreasing pattern, it may mean that the player gets distracted by external factors while playing the game (e.g. he/she does something else while playing the game at some times), which may mean that the player lacks focus and can be easily distracted while doing a task.", "Insufficient data."],
 		"winning_games_play_time" : ["The decreasing time that this player spends in order to successfully complete this house per game use may mean that the player is progressively learning how to respond to people when they are feeling joyous (change na lang based sa emotion ng house). This may also mean that he/she is a fast learner, at least for the lessons, taught in this house.", "The increasing time that this player spends in order to successfully complete this house per game use may mean that the player is struggling to learn how to respond to people when they are feeling joyous (change na lang based sa emotion ng house). This may also mean that he/she is a slow learner, at least for the lessons taught in this house.", "Since the amount of time that this player spends to successfully complete this house per game use shows neither an increasing nor decreasing pattern, it may mean that the player gets distracted by external factors while playing the game (e.g. he/she does something else while playing the game at some times), which may mean that the player lacks focus and can be easily distracted while doing a task. It may also mean that the player is struggling to remember and learn how to respond to people when they are feeling joyous (change na lang based sa emotion ng house).", "Insufficient data."],
+		"whole_game_play_time" : ["The decreasing time that this player spends in playing this game per website use may mean that the player is progressively learning how to respond to people when they are feeling certain emotions. This may also mean the he/she is losing interest in playing the game, maybe because he/she has already learned about the lessons of the game, or because he/she is struggling to play the game – these cases may mean that the player is either a fast or slow learner.", "The increasing time that this player spends in playing this game per website use may mean that the player is struggling to learn how to respond to people when they are feeling certain emotions. This may also mean the he/she is gaining interest in playing the game as time goes by, maybe because he/she is still not contented with what he/she has learned about the lessons of the game or because he/she is struggling to play the game and just likes to challenge himself/herself – these cases may mean that the player is either a fast or slow learner, or that he/she likes to challenge himself/herself." "Since the amount of time that this player spends in playing the game shows neither an increasing nor decreasing pattern, it may mean that the player gets distracted by external factors while playing the game (e.g. he/she does something else while playing the game at some times), which may mean that the player lacks focus and can be easily distracted while doing a task. It may also mean that the player is struggling to remember and learn how to respond to people when they are feeling certain emotions.", "Insufficient data."],
 		"character_chosen" : ["The uniformity of selections for character n may mean that the player only likes to stick to one option (his/her first choice), perhaps because this is his/her favorite. It may mean that the player is not interested in trying other different things and that he/she likes to follow only one routine. The collected data shows that his/her favorite character is character n, which may be due to the gender of the character or due to the design of the clothes of the character.", "The selections between the two characters may mean that the player likes a little variation and that the player likes to experience something new from time to time; it may also mean that the player is easy to become bored from something. The collected data shows that his/her favorite character is character n, which may be due to the gender of the character or due to the design of the clothes of the character.", "The variation of selections may mean that the player is explorative and that he/she is open to try and experience new things. Also, the collected data shows that his/her favorite character is character n, which may be due to the gender of the character or due to the design of the clothes of the character.", "Insufficient data."],
 		"number_of_tries_before_completion_per_house" : ["The decreasing number of attempts that this player does to successfully complete this house may mean that the player is progressively learning how to respond to people when they are feeling joyous (change na lang based sa emotion ng house). This may also mean that the player is a fast learner.", "The increasing number of attempts that this player does to successfully complete this house may mean that the player is struggling to learn how to respond to people when they are feeling joyous (change na lang based sa emotion ng house). This may also mean that the player is a slow learner.", "Since the number of attempts that the player does to successfully complete this house does shows neither an increasing nor decreasing pattern, it may mean that the player is struggling to remember or learn how to respond to people when they are feeling joyous (change na lang based sa emotion ng house). It may also mean that the player plays this house randomly or that he/she does not seriously play it.", "Insufficient data."],
 		"average_number_of_wrong_answers_per_house" : ["The decreasing average number of wrong answers per attempt may mean that this player is progressively learning how to properly respond to people when they are feeling joyous (change na lang based sa emotion ng house). This may also mean that the player is a fast learner since he/she can learn or remember the choices that should not be chosen.", "The increasing average number of wrong answers per attempt may mean that this player is struggling to learn how to properly respond to people when they are feeling joyous (change na lang based sa emotion ng house). This may also mean that the player is a slow learner since he/she cannot easily learn or remember the choices that should not be chosen.", "Since the average number of wrong answers per attempt that the player commits to this house shows neither an increasing nor decreasing pattern, it may mean that the player is still struggling to remember or learn how to respond to people when they are feeling joyous (change na lang based sa emotion ng house). It may also mean that the player plays this house randomly or that he/she does not seriously play it.", "Insufficient data."], 
@@ -154,8 +155,8 @@ app.post('/get_first_game_data', (req, res) => {
 			"house-play-time-win-only-house-joy" : [time_per_house_win_only[3], analysis["winning_games_play_time"][isIncOrDec(time_per_house_win_only[3])]],
 			"house-play-time-win-only-house-sadness" : [time_per_house_win_only[4], analysis["winning_games_play_time"][isIncOrDec(time_per_house_win_only[4])]],
 			"house-play-time-win-only-house-surprise" : [time_per_house_win_only[5], analysis["winning_games_play_time"][isIncOrDec(time_per_house_win_only[5])]],
-			"game-play-time" : [, analysis[][]],
-			"character-chosen" : [, analysis["character_chosen"][characters_chosen_count-1]],
+			"game-play-time" : [total_time_for_playing_the_whole_game, analysis["whole_game_play_time"][isIncOrDec(total_time_for_playing_the_whole_game)]],
+			"character-chosen" : [characters_count, analysis["character_chosen"][characters_chosen_count-1]],
 			"tries-before-succession" : [, analysis[][]],
 			"wrong-answers-per-attempt" : [, analysis[][]]};
 			//[a,b] = [data, analysis]
@@ -222,31 +223,38 @@ app.post('/get_second_game_data', (req, res) => {
 			//end of relevant functions
 			//relevant variables
 			var overall_total_play_time = [];
-			var total_play_time_per_level = [[],[],[],[],[],[],[]];
+			var average_play_time_per_level = [[],[],[],[],[],[],[]];
 			var wrong_prompts_per_level = [[],[],[],[],[],[],[]];
 			var play_count_per_level = [[],[],[],[],[],[],[]];
 			var attempts_per_level = [[],[],[],[],[],[],[]];
-
+			var latest_date;
+			var time_counter_for_current_date = 0, play_counter_for_current_date = 0, wrong_prompt_counter_for_current_date = 0;
 			//end of relevant variables
+			//main loop
 			for(var i=0; i<result.length; i++){
 				var level = result[i].level;
 				var time = result[i].time;
-				var character = result[i].character;
-				var wrong-clicks = result[i].wrong-clicks;
-				if(time != 0){
-					play_time_list.push(time);
+				var date = result[i].date;
+				var wrong_prompt = result[i].wrong-prompt;
+				overall_total_play_time.push(time);
+				if(i == 0){
+					latest_date = date;
+					time_counter_for_current_date += time;
+					play_counter_for_current_date += 1;
 				}
-				var checker = false;
-				for(var j=0; j<characters.length; j++){
-					if(characters[i] == character){
-						checker = true;
+				else{
+					if(date == latest_date){
+						time_counter_for_current_date += time;
+						play_counter_for_current_date += 1;
+					}
+					else{
+						average_play_time_per_level[level-1].push(time_counter_for_current_date/play_counter_for_current_date);
+						time_counter_for_current_date = time;
+						play_counter_for_current_date = 1;
 					}
 				}
-				if(!checker){
-					characters.push(character);
-				}
-				wrong_clicks[level-1] += wrong-clicks;
 			}
+			//end of main loop
 			// var average_time_per_level = [0,0,0,0,0,0,0];
 			// for(var i=0; i<7; i++){
 			// 	average_time_per_level[i] = time_per_level[i]/games_per_level[i];
