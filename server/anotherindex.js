@@ -77,9 +77,20 @@ app.post('/get_first_game_data', (req, res) => {
 				var win = result[i].win;
 				timer_per_minigame.push(minigame_time);
 				time_per_house_win_or_lose[level-1].push(time);
+				total_time_for_playing_the_whole_game.push(time);
 				if(win == 1){
 					time_per_house_win_only[level-1].push(time);
 				}
+				if(characters_chosen_count[character] == undefined){
+					characters_chosen_count = 1;
+				}
+				else{
+					characters_chosen_count += 1;
+				}
+				//edit pa pala tong try count shiz
+				tries_before_completion_per_house[level-1].push(try_count);
+				//end of edit
+				
 			}
 			// var average_time_per_level = [0,0,0,0,0,0,0];
 			// for(var i=0; i<7; i++){
