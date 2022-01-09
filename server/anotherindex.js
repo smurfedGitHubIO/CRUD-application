@@ -73,16 +73,22 @@ app.post('/get_first_game_data', (req, res) => {
 				var character = result[i].character;
 				var try_count = result[i].tries;
 				var wrong_answers = result[i].wrong-answers;
-				
+				var minigame_time = result[i].minigame-time;
+				var win = result[i].win;
+				timer_per_minigame.push(minigame_time);
+				time_per_house_win_or_lose[level-1].push(time);
+				if(win == 1){
+					time_per_house_win_only[level-1].push(time);
+				}
 			}
-			var average_time_per_level = [0,0,0,0,0,0,0];
-			for(var i=0; i<7; i++){
-				average_time_per_level[i] = time_per_level[i]/games_per_level[i];
-				total_play_time += time_per_level[i];
-				total_number_of_games += games_per_level[i];
-			}
-			res_values = {average_time_per_level:average_time_per_level, time_per_level:time_per_level, total_play_time:total_play_time, total_average_play_time: total_play_time/total_number_of_games,characters:characters,wrong_clicks:wrong_clicks};
-			res.send(res_values);
+			// var average_time_per_level = [0,0,0,0,0,0,0];
+			// for(var i=0; i<7; i++){
+			// 	average_time_per_level[i] = time_per_level[i]/games_per_level[i];
+			// 	total_play_time += time_per_level[i];
+			// 	total_number_of_games += games_per_level[i];
+			// }
+			// res_values = {average_time_per_level:average_time_per_level, time_per_level:time_per_level, total_play_time:total_play_time, total_average_play_time: total_play_time/total_number_of_games,characters:characters,wrong_clicks:wrong_clicks};
+			// res.send(res_values);
 		}
 	});
 });
@@ -148,8 +154,6 @@ app.post('/get_second_game_data', (req, res) => {
 				if(time != 0){
 					play_time_list.push(time);
 				}
-				games_per_level[level-1] += 1;
-				time_per_level[level-1] += time;
 				var checker = false;
 				for(var j=0; j<characters.length; j++){
 					if(characters[i] == character){
@@ -161,14 +165,14 @@ app.post('/get_second_game_data', (req, res) => {
 				}
 				wrong_clicks[level-1] += wrong-clicks;
 			}
-			var average_time_per_level = [0,0,0,0,0,0,0];
-			for(var i=0; i<7; i++){
-				average_time_per_level[i] = time_per_level[i]/games_per_level[i];
-				total_play_time += time_per_level[i];
-				total_number_of_games += games_per_level[i];
-			}
-			res_values = {average_time_per_level:average_time_per_level, time_per_level:time_per_level, total_play_time:total_play_time, total_average_play_time: total_play_time/total_number_of_games,characters:characters,wrong_clicks:wrong_clicks};
-			res.send(res_values);
+			// var average_time_per_level = [0,0,0,0,0,0,0];
+			// for(var i=0; i<7; i++){
+			// 	average_time_per_level[i] = time_per_level[i]/games_per_level[i];
+			// 	total_play_time += time_per_level[i];
+			// 	total_number_of_games += games_per_level[i];
+			// }
+			// res_values = {average_time_per_level:average_time_per_level, time_per_level:time_per_level, total_play_time:total_play_time, total_average_play_time: total_play_time/total_number_of_games,characters:characters,wrong_clicks:wrong_clicks};
+			// res.send(res_values);
 		}
 	});
 });
