@@ -53,17 +53,33 @@ app.post('/get_first_game_data', (req, res) => {
 				}
 				return isIncOrDec;
 			}
+			function dateParser(date){
+				var dateParsed = [];
+				var current = "";
+				for(var i=0; i<date.length; i++){
+					if(date[i] == '-'){
+						dateParsed.push(current);
+						current = "";
+					}
+					else{
+						current += date[i];
+					}
+				}
+				dateParsed.push(current);
+				return dateParsed;
+			}
 			//end of relevant functions
 			//relevant variables
 			var time_per_minigame = [];
 			var time_per_house_win_or_lose = [[], [], [], [], [], []];
 			var time_per_house_win_only = [[], [], [], [], [], []];
 			var total_time_for_playing_the_whole_game = [];
-			var characters = [];
 			var characters_chosen_count = {};
+			var characters_count = 0;
 			var tries_before_completion_per_house = [[], [], [], [], [], []];
 			var number_of_wrong_answers_per_house = [[], [], [], [], [], []];
 			var number_of_games_per_house = [[], [], [], [], [], []];
+			var latest_date;
 			//end of relevant variables
 			//main loop function
 			for(var i=0; i<result.length; i++){
@@ -83,14 +99,29 @@ app.post('/get_first_game_data', (req, res) => {
 				}
 				if(characters_chosen_count[character] == undefined){
 					characters_chosen_count = 1;
+					characters_count += 1;
 				}
 				else{
 					characters_chosen_count += 1;
 				}
 				//edit pa pala tong try count shiz
+				if(i == 0){
+					latest_date = date;
+					if(win == 1){
+						
+					}
+				}
+				else{
+					if(date == latest_date){
+
+					}
+					else{
+						latest_date = date;
+					}
+				}
 				tries_before_completion_per_house[level-1].push(try_count);
 				//end of edit
-				
+
 			}
 			// var average_time_per_level = [0,0,0,0,0,0,0];
 			// for(var i=0; i<7; i++){
