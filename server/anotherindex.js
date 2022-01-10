@@ -267,6 +267,17 @@ app.post('/get_second_game_data', (req, res) => {
 			}
 			//end of main loop
 			//analysis
+			var result_values = {"whole-game-time" : [overall_total_play_time, analysis["overall_total_play_time"][isIncOrDec(overall_total_play_time)]],
+			"average-play-time-level-1" : [average_play_time_per_level[0], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[0])]],
+			"average-play-time-level-2" : [average_play_time_per_level[1], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[1])]],
+			"average-play-time-level-3" : [average_play_time_per_level[2], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[2])]],
+			"average-play-time-level-4" : [average_play_time_per_level[3], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[3])]],
+			"average-play-time-level-5" : [average_play_time_per_level[4], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[4])]],
+			"average-play-time-level-6" : [average_play_time_per_level[5], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[5])]],
+			"game-play-time" : [total_time_for_playing_the_whole_game, analysis["whole_game_play_time"][isIncOrDec(total_time_for_playing_the_whole_game)]],
+			"character-chosen" : [characters_count, analysis["character_chosen"][characters_chosen_count-1]],
+			"tries-before-succession" : [, analysis[][]],
+			"wrong-answers-per-attempt" : [, analysis[][]]};
 			//end of analysis
 			// var average_time_per_level = [0,0,0,0,0,0,0];
 			// for(var i=0; i<7; i++){
