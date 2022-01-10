@@ -227,8 +227,9 @@ app.post('/get_second_game_data', (req, res) => {
 			var wrong_prompts_per_level = [[],[],[],[],[],[],[]];
 			var play_count_per_level = [[],[],[],[],[],[],[]];
 			var attempts_per_level = [[],[],[],[],[],[],[]];
+			var average_number_of_moves_per_attempt_per_level = [[],[],[],[],[],[],[]];
 			var latest_date;
-			var time_counter_for_current_date = 0, play_counter_for_current_date = 0, wrong_prompt_counter_for_current_date = 0;
+			var time_counter_for_current_date = 0, play_counter_for_current_date = 0, wrong_prompt_counter_for_current_date = 0, number_of_moves_counter_for_current_date = 0;
 			//end of relevant variables
 			//main loop
 			for(var i=0; i<result.length; i++){
@@ -236,25 +237,37 @@ app.post('/get_second_game_data', (req, res) => {
 				var time = result[i].time;
 				var date = result[i].date;
 				var wrong_prompt = result[i].wrong-prompt;
+				var number_of_moves = result[i].moves;
 				overall_total_play_time.push(time);
 				if(i == 0){
 					latest_date = date;
 					time_counter_for_current_date += time;
 					play_counter_for_current_date += 1;
+					wrong_prompt_counter_for_current_date += wrong_prompt;
+					number_of_moves_counter_for_current_date += number_of_moves;
 				}
 				else{
 					if(date == latest_date){
 						time_counter_for_current_date += time;
 						play_counter_for_current_date += 1;
+						wrong_prompt_counter_for_current_date += wrong_prompt;
+						number_of_moves_counter_for_current_date += number_of_moves;
 					}
 					else{
 						average_play_time_per_level[level-1].push(time_counter_for_current_date/play_counter_for_current_date);
+						wrong_prompts_per_level[level-1].push(wrong_prompt/play_counter_for_current_date);
+						attempts_per_level[level-1].push(play_counter_for_current_date);
+						average_number_of_moves_per_attempt_per_level[level-1].push(number_of_moves_counter_for_current_date/play_counter_for_current_date);
 						time_counter_for_current_date = time;
 						play_counter_for_current_date = 1;
+						wrong_prompt_counter_for_current_date = wrong_prompt;
+						number_of_moves_counter_for_current_date = number_of_moves;
 					}
 				}
 			}
 			//end of main loop
+			//analysis
+			//end of analysis
 			// var average_time_per_level = [0,0,0,0,0,0,0];
 			// for(var i=0; i<7; i++){
 			// 	average_time_per_level[i] = time_per_level[i]/games_per_level[i];
