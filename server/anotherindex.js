@@ -274,7 +274,12 @@ app.post('/get_second_game_data', (req, res) => {
 			"average-play-time-level-4" : [average_play_time_per_level[3], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[3])]],
 			"average-play-time-level-5" : [average_play_time_per_level[4], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[4])]],
 			"average-play-time-level-6" : [average_play_time_per_level[5], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[5])]],
-			"game-play-time" : [total_time_for_playing_the_whole_game, analysis["whole_game_play_time"][isIncOrDec(total_time_for_playing_the_whole_game)]],
+			"average-number-of-wrong-prompts-level-1" : [wrong_prompts_per_level[0], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[0])]],
+			"average-number-of-wrong-prompts-level-2" : [wrong_prompts_per_level[1], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[1])]],
+			"average-number-of-wrong-prompts-level-3" : [wrong_prompts_per_level[2], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[2])]],
+			"average-number-of-wrong-prompts-level-4" : [wrong_prompts_per_level[3], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[3])]],
+			"average-number-of-wrong-prompts-level-5" : [wrong_prompts_per_level[4], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[4])]],
+			"average-number-of-wrong-prompts-level-6" : [wrong_prompts_per_level[5], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[5])]],
 			"character-chosen" : [characters_count, analysis["character_chosen"][characters_chosen_count-1]],
 			"tries-before-succession" : [, analysis[][]],
 			"wrong-answers-per-attempt" : [, analysis[][]]};
