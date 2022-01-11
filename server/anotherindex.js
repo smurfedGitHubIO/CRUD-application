@@ -280,9 +280,18 @@ app.post('/get_second_game_data', (req, res) => {
 			"average-number-of-wrong-prompts-level-4" : [wrong_prompts_per_level[3], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[3])]],
 			"average-number-of-wrong-prompts-level-5" : [wrong_prompts_per_level[4], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[4])]],
 			"average-number-of-wrong-prompts-level-6" : [wrong_prompts_per_level[5], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[5])]],
-			"character-chosen" : [characters_count, analysis["character_chosen"][characters_chosen_count-1]],
-			"tries-before-succession" : [, analysis[][]],
-			"wrong-answers-per-attempt" : [, analysis[][]]};
+			"number-of-attempts-level-1" : [attempts_per_level[0], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[0])]],
+			"number-of-attempts-level-2" : [attempts_per_level[1], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[1])]],
+			"number-of-attempts-level-3" : [attempts_per_level[2], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[2])]],
+			"number-of-attempts-level-4" : [attempts_per_level[3], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[3])]],
+			"number-of-attempts-level-5" : [attempts_per_level[4], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[4])]],
+			"number-of-attempts-level-6" : [attempts_per_level[5], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[5])]],
+			"average-number-of-moves-level-1" : [average_number_of_moves_per_attempt_per_level[0], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[0])]],"average_number_of_moves_per_level"
+			"average-number-of-moves-level-2" : [average_number_of_moves_per_attempt_per_level[1], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[1])]],"average_number_of_moves_per_level"
+			"average-number-of-moves-level-3" : [average_number_of_moves_per_attempt_per_level[2], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[2])]],"average_number_of_moves_per_level"
+			"average-number-of-moves-level-4" : [average_number_of_moves_per_attempt_per_level[3], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[3])]],"average_number_of_moves_per_level"
+			"average-number-of-moves-level-5" : [average_number_of_moves_per_attempt_per_level[4], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[4])]],"average_number_of_moves_per_level"
+			"average-number-of-moves-level-6" : [average_number_of_moves_per_attempt_per_level[5], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[5])]]};
 			//end of analysis
 			// var average_time_per_level = [0,0,0,0,0,0,0];
 			// for(var i=0; i<7; i++){
@@ -419,16 +428,32 @@ app.post('/get_third_game_data', (req, res) => {
 			}
 			//end of main loop for all values in database
 			//analysis
-
+			var result_values = {"whole-game-time" : [overall_total_play_time, analysis["overall_total_play_time"][isIncOrDec(overall_total_play_time)]],
+			"average-play-time-level-1" : [average_play_time_per_level[0], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[0])]],
+			"average-play-time-level-2" : [average_play_time_per_level[1], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[1])]],
+			"average-play-time-level-3" : [average_play_time_per_level[2], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[2])]],
+			"average-play-time-level-4" : [average_play_time_per_level[3], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[3])]],
+			"average-play-time-level-5" : [average_play_time_per_level[4], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[4])]],
+			"average-play-time-level-6" : [average_play_time_per_level[5], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[5])]],
+			"average-number-of-wrong-prompts-level-1" : [wrong_prompts_per_level[0], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[0])]],
+			"average-number-of-wrong-prompts-level-2" : [wrong_prompts_per_level[1], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[1])]],
+			"average-number-of-wrong-prompts-level-3" : [wrong_prompts_per_level[2], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[2])]],
+			"average-number-of-wrong-prompts-level-4" : [wrong_prompts_per_level[3], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[3])]],
+			"average-number-of-wrong-prompts-level-5" : [wrong_prompts_per_level[4], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[4])]],
+			"average-number-of-wrong-prompts-level-6" : [wrong_prompts_per_level[5], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[5])]],
+			"number-of-attempts-level-1" : [attempts_per_level[0], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[0])]],
+			"number-of-attempts-level-2" : [attempts_per_level[1], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[1])]],
+			"number-of-attempts-level-3" : [attempts_per_level[2], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[2])]],
+			"number-of-attempts-level-4" : [attempts_per_level[3], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[3])]],
+			"number-of-attempts-level-5" : [attempts_per_level[4], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[4])]],
+			"number-of-attempts-level-6" : [attempts_per_level[5], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[5])]],
+			"average-number-of-moves-level-1" : [average_number_of_moves_per_attempt_per_level[0], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[0])]],"average_number_of_moves_per_level"
+			"average-number-of-moves-level-2" : [average_number_of_moves_per_attempt_per_level[1], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[1])]],"average_number_of_moves_per_level"
+			"average-number-of-moves-level-3" : [average_number_of_moves_per_attempt_per_level[2], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[2])]],"average_number_of_moves_per_level"
+			"average-number-of-moves-level-4" : [average_number_of_moves_per_attempt_per_level[3], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[3])]],"average_number_of_moves_per_level"
+			"average-number-of-moves-level-5" : [average_number_of_moves_per_attempt_per_level[4], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[4])]],"average_number_of_moves_per_level"
+			"average-number-of-moves-level-6" : [average_number_of_moves_per_attempt_per_level[5], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[5])]]};
 			//end of analysis
-			var average_time_per_level = [0,0,0,0,0,0,0];
-			for(var i=0; i<7; i++){
-				average_time_per_level[i] = time_per_level[i]/games_per_level[i];
-				total_play_time += time_per_level[i];
-				total_number_of_games += games_per_level[i];
-			}
-			res_values = {average_time_per_level:average_time_per_level, time_per_level:time_per_level, total_play_time:total_play_time, total_average_play_time: total_play_time/total_number_of_games,characters:characters,wrong_clicks:wrong_clicks};
-			res.send(res_values);
 		}
 	});
 });
