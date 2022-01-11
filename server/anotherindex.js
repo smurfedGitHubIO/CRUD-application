@@ -367,64 +367,29 @@ app.post('/get_third_game_data', (req, res) => {
 			}
 			//end of relevant functions
 			//relevant variables
-			var number_of_games_per_level = [0,0,0,0,0,0,0];
-			var time_per_level = [0,0,0,0,0,0,0];
-			var total_play_time = 0;
-			var total_number_of_games = 0;
 			var characters = [];
 			var characters_count = {};
-			var wrong_clicks = [0,0,0,0,0,0,0];
-			var attempts_per_level = [0,0,0,0,0,0,0];
 			var playtime_list_per_level_average = [[],[],[],[],[],[],[]];
 			var playtime_list_per_level_total = [[],[],[],[],[],[],[]];
+			var play_count_per_level = [[],[],[],[],[],[]];
+			var wrong_clicks_per_level = [[],[],[],[],[],[],[]];
+			var attempts_per_level = [[],[],[],[],[],[],[]];
 			var latest_date;
-			var play_counter_for_current_date = 0, time_counter_for_current_date = 0;
+			var play_counter_for_current_date = 0, time_counter_for_current_date = 0, wrong_clicks_counter_for_current_date = 0;
 			//end of relevant variables
 			//main loop for all values in database
 			for(var i=0; i<result.length; i++){
 				var level = result[i].level;
 				var time = result[i].time;
 				var character = result[i].character;
-				var wrong-clicks = result[i].wrong-clicks;
+				var wrong_clicks = result[i].wrong-clicks;
 				var date = result[i].date;
 				if(i == 0){
 					latest_date = date;
 					play_counter_for_current_date += 1;
 					time_counter_for_current_date += time;
+					//well shit, fix time counters
 				}
-				else{
-					if(date == latest_date){
-						play_counter_for_current_date += 1;
-						time_counter_for_current_date += time;
-					}
-					else{
-						playtime_list_per_level_average[level-1].push(time_counter_for_current_date/play_counter_for_current_date);
-						playtime_list_per_level_total[level-1].push(time_counter_for_current_date);
-						time_counter_for_current_date = time;
-						play_counter_for_current_date = 1;
-					}
-				}
-				if(time != 0){
-					playtime_list_per_level[level-1].push(time);
-				}
-				games_per_level[level-1] += 1;
-				time_per_level[level-1] += time;
-				var checker = false;
-				for(var j=0; j<characters.length; j++){
-					if(characters[i] == character){
-						checker = true;
-					}
-				}
-				if(!checker){
-					characters.push(character);
-				}
-				if(characters_count[character] == undefined){
-					characters_count[character] = 0;
-				}
-				else{
-					characters_count[character] += 1;
-				}
-				wrong_clicks[level-1] += wrong-clicks;
 			}
 			//end of main loop for all values in database
 			//analysis
