@@ -389,6 +389,7 @@ app.post('/get_third_game_data', (req, res) => {
 					play_counter_for_current_date += 1;
 					time_counter_for_current_date += time;
 					//well shit, fix time counters
+					//just add current level counter i guess
 				}
 			}
 			//end of main loop for all values in database
