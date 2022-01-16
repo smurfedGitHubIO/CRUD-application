@@ -80,6 +80,7 @@ app.post('/get_first_game_data', (req, res) => {
 			var number_of_wrong_answers_per_house = [[], [], [], [], [], []];
 			var number_of_games_per_house = [[], [], [], [], [], []];
 			var latest_date;
+			var latest_level = -1;
 			var try_counter = 0, wrong_answers_counter = 0;
 			//end of relevant variables
 			//main loop function
@@ -107,6 +108,7 @@ app.post('/get_first_game_data', (req, res) => {
 				}
 				if(i == 0){
 					latest_date = date;
+					latest_level = level;
 					if(win){
 						tries_before_completion_per_house[level-1].push(try_counter);
 						try_counter = 0;
@@ -117,7 +119,7 @@ app.post('/get_first_game_data', (req, res) => {
 					wrong_answers_counter = wrong_answers;
 				}
 				else{
-					if(date == latest_date){
+					if(date == latest_date && latest_level == level){
 						if(win){
 							tries_before_completion_per_house[level-1].push(try_counter);
 							try_counter = 0;
@@ -129,7 +131,8 @@ app.post('/get_first_game_data', (req, res) => {
 					}
 					else{
 						latest_date = date;
-						number_of_wrong_answers_per_house[level-1].push(wrong_answers_counter/try_counter);
+						number_of_wrong_answers_per_house[latest_level-1].push(wrong_answers_counter/try_counter);
+						latest_level = level;
 						if(win){
 							tries_before_completion_per_house[level-1].push(try_counter);
 							try_counter = 0;
@@ -229,6 +232,7 @@ app.post('/get_second_game_data', (req, res) => {
 			var attempts_per_level = [[],[],[],[],[],[],[]];
 			var average_number_of_moves_per_attempt_per_level = [[],[],[],[],[],[],[]];
 			var latest_date;
+			var latest_level = -1;
 			var time_counter_for_current_date = 0, play_counter_for_current_date = 0, wrong_prompt_counter_for_current_date = 0, number_of_moves_counter_for_current_date = 0;
 			//end of relevant variables
 			//main loop
@@ -241,25 +245,27 @@ app.post('/get_second_game_data', (req, res) => {
 				overall_total_play_time.push(time);
 				if(i == 0){
 					latest_date = date;
+					latest_level = level;
 					time_counter_for_current_date += time;
 					play_counter_for_current_date += 1;
 					wrong_prompt_counter_for_current_date += wrong_prompt;
 					number_of_moves_counter_for_current_date += number_of_moves;
 				}
 				else{
-					if(date == latest_date){
+					if(date == latest_date && latest_level == level){
 						time_counter_for_current_date += time;
 						play_counter_for_current_date += 1;
 						wrong_prompt_counter_for_current_date += wrong_prompt;
 						number_of_moves_counter_for_current_date += number_of_moves;
 					}
 					else{
-						average_play_time_per_level[level-1].push(time_counter_for_current_date/play_counter_for_current_date);
-						wrong_prompts_per_level[level-1].push(wrong_prompt/play_counter_for_current_date);
-						attempts_per_level[level-1].push(play_counter_for_current_date);
-						average_number_of_moves_per_attempt_per_level[level-1].push(number_of_moves_counter_for_current_date/play_counter_for_current_date);
+						average_play_time_per_level[latest_level-1].push(time_counter_for_current_date/play_counter_for_current_date);
+						wrong_prompts_per_level[latest_level-1].push(wrong_prompt/play_counter_for_current_date);
+						attempts_per_level[latest_level-1].push(play_counter_for_current_date);
+						average_number_of_moves_per_attempt_per_level[latest_level-1].push(number_of_moves_counter_for_current_date/play_counter_for_current_date);
 						time_counter_for_current_date = time;
 						play_counter_for_current_date = 1;
+						latest_level = level;
 						wrong_prompt_counter_for_current_date = wrong_prompt;
 						number_of_moves_counter_for_current_date = number_of_moves;
 					}
@@ -350,21 +356,6 @@ app.post('/get_third_game_data', (req, res) => {
 				}
 				return isIncOrDec;
 			}
-			function dateParser(date){
-				var dateParsed = [];
-				var current = "";
-				for(var i=0; i<date.length; i++){
-					if(date[i] == '-'){
-						dateParsed.push(current);
-						current = "";
-					}
-					else{
-						current += date[i];
-					}
-				}
-				dateParsed.push(current);
-				return dateParsed;
-			}
 			//end of relevant functions
 			//relevant variables
 			var characters = [];
@@ -375,6 +366,7 @@ app.post('/get_third_game_data', (req, res) => {
 			var wrong_clicks_per_level = [[],[],[],[],[],[],[]];
 			var attempts_per_level = [[],[],[],[],[],[],[]];
 			var latest_date;
+			var latest_level = level;
 			var play_counter_for_current_date = 0, time_counter_for_current_date = 0, wrong_clicks_counter_for_current_date = 0;
 			//end of relevant variables
 			//main loop for all values in database
@@ -388,8 +380,7 @@ app.post('/get_third_game_data', (req, res) => {
 					latest_date = date;
 					play_counter_for_current_date += 1;
 					time_counter_for_current_date += time;
-					//well shit, fix time counters
-					//just add current level counter i guess
+					
 				}
 			}
 			//end of main loop for all values in database
