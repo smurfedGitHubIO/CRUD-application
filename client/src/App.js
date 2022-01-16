@@ -3,39 +3,98 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function App() {
-  const [name, setName] = useState("");
-  const [age, setAge] = useState(0);
-  var data;
-  const addToDatabase = () => {
-    axios.post("http://localhost:3002/create", {
-      name: name,
-      age: age
-    }).then(() => {
-      console.log("success");
-    });
-  };
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [full_name, setFullname] = useState("");
+	const [age, setAge] = useState(0);
+	const [address, setAddress] = useState("");
+	const [email, setEmail] = useState("");
+	const [usertype, setUsertype] = useState("");
+	const [connections, setConnections] = useState("");
+	var current_username;
 
-  const checkData = () => {
-    axios.get("http://localhost:3002/get_data").then((resp) => {
-      data = resp;
-      console.log(data.data);
-    });
-  };
+//register user function
 
-  return (
-    <div>
-    <label>Name:</label>
-    <input type="text" onChange={(event) => {
-      setName(event.target.value);
-    }} />
-    <label>Age:</label>
-    <input type="number" onChange={(event) => {
-      setAge(event.target.value);
-    }} />
-    <button onClick={addToDatabase}>Add</button>
-    <button onClick={checkData}>Check</button>
-    </div>
-  );
+	const register_user = () => {
+		axios.post("http://localhost:3002/register-new-user", {
+			username: username,
+			password: password,
+			full_name: full_name,
+			age: age,
+			address: address,
+			email: email,
+			usertype: usertype,
+			connections: connections
+		}).then(() => {
+			console.log("User registered.");
+		});
+	};
+
+//login function
+
+	const login = () => {
+		axios.post("http://localhost:3002/login_authentication", {
+			username: username,
+			password: password
+		}).then((resp) => {
+			console.log("Login successful.");
+		});
+	};
+
+//password update function
+
+	const update_password = () => {
+		axios.post("http://localhost:3002/update_password", {
+			username: username,
+			password: password
+		}).then((resp) => {
+			console.log("Password update successful.");
+		});
+	};
+
+//get current user function
+//a must have when going to profile and games
+	// axios.get("http://localhost:3002/current_user").then((resp) => {
+	// 	current_username = resp.data;
+	// });
+
+	return (
+		<div>
+		<label>Username:</label>
+		<input type="text" onChange={(event) => {
+		  setUsername(event.target.value);
+		}} />
+		<label>Password:</label>
+		<input type="password" onChange={(event) => {
+		  setPassword(event.target.value);
+		}} />
+		<label>Full Name:</label>
+		<input type="text" onChange={(event) => {
+		  setFullname(event.target.value);
+		}} />
+		<label>Age:</label>
+		<input type="number" onChange={(event) => {
+		  setAge(event.target.value);
+		}} />
+		<label>Address:</label>
+		<input type="text" onChange={(event) => {
+		  setAddress(event.target.value);
+		}} />
+		<label>Email:</label>
+		<input type="text" onChange={(event) => {
+		  setEmail(event.target.value);
+		}} />
+		<label>Usertype:</label>
+		<input type="text" onChange={(event) => {
+		  setUsertype(event.target.value);
+		}} />
+		<label>Connection:</label>
+		<input type="text" onChange={(event) => {
+		  setConnections(event.target.value);
+		}} />
+		<button onClick = {register_user}>Sign Up</button>
+		</div>
+	);
 }
 
 export default App;
