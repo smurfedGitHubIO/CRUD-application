@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 function App() {
@@ -11,6 +11,7 @@ function App() {
 	const [email, setEmail] = useState("");
 	const [usertype, setUsertype] = useState("");
 	const [connections, setConnections] = useState("");
+	const [first_game_data, setFirstgamedata] = useState([]);
 	var current_username;
 
 //register user function
@@ -52,47 +53,29 @@ function App() {
 		});
 	};
 
+//get users list function
+
+	const get_users_list = () => {
+		axios.get("http://localhost:3002/users_list").then((resp) => {
+			setFirstgamedata(resp.data);
+		});
+	};
+
 //get current user function
 //a must have when going to profile and games
-	// axios.get("http://localhost:3002/current_user").then((resp) => {
-	// 	current_username = resp.data;
-	// });
-
+	const get_user = () => {
+		axios.get("http://localhost:3002/current_user").then((resp) => {
+			axios.get("http://localhost:3002/get_third_game_data", {
+				name: resp.data
+			}).then((resp2) => {
+				console.log(resp2.data);
+			});
+		});
+	}
 	return (
 		<div>
-		<label>Username:</label>
-		<input type="text" onChange={(event) => {
-		  setUsername(event.target.value);
-		}} />
-		<label>Password:</label>
-		<input type="password" onChange={(event) => {
-		  setPassword(event.target.value);
-		}} />
-		<label>Full Name:</label>
-		<input type="text" onChange={(event) => {
-		  setFullname(event.target.value);
-		}} />
-		<label>Age:</label>
-		<input type="number" onChange={(event) => {
-		  setAge(event.target.value);
-		}} />
-		<label>Address:</label>
-		<input type="text" onChange={(event) => {
-		  setAddress(event.target.value);
-		}} />
-		<label>Email:</label>
-		<input type="text" onChange={(event) => {
-		  setEmail(event.target.value);
-		}} />
-		<label>Usertype:</label>
-		<input type="text" onChange={(event) => {
-		  setUsertype(event.target.value);
-		}} />
-		<label>Connection:</label>
-		<input type="text" onChange={(event) => {
-		  setConnections(event.target.value);
-		}} />
-		<button onClick = {register_user}>Sign Up</button>
+		<button onClick = {get_user}>Analyze Data</button>
+		
 		</div>
 	);
 }
