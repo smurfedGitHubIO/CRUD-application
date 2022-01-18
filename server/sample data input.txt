@@ -1,0 +1,15 @@
+INSERT INTO `registered-users` (username, password, full_name, age, address, email, usertype) VALUES ("jcfrongoso", "March802", "Justin Clyde Frongoso", 19, "Cavite", "clydefrongoso@gmail.com", "Player");
+INSERT INTO `registered-users` (username, password, full_name, age, address, email, usertype) VALUES ("smtn", "smtn", "Ron Mikhael Surara", 21, "Naga", "themikosurara@gmail.com", "Player");
+INSERT INTO `registered-users` (username, password, full_name, age, address, email, usertype) VALUES ("clclyde", "clclyde", "Clyde Borrega", 18, "Catanduanes", "clclyde@gmail.com", "Guardian");
+
+INSERT INTO `first-game-stats` (username, date1, level1, time1, mini_game_time, win_or_lose, character1, wrong_answers) VALUES ("jcfrongoso", "1-2-3", 1, 120, 23, 1, "Clyde", 12);
+INSERT INTO `first-game-stats` (username, date1, level1, time1, mini_game_time, win_or_lose, character1, wrong_answers) VALUES ("jcfrongoso", "1-3-3", 1, 354, 22, 1, "Clyde", 11);
+INSERT INTO `first-game-stats` (username, date1, level1, time1, mini_game_time, win_or_lose, character1, wrong_answers) VALUES ("jcfrongoso", "1-4-3", 1, 423, 21, 1, "Clyde", 10);
+
+INSERT INTO `second-game-stats` (username, date1, level1, time1, wrong_prompts, moves) VALUES ("jcfrongoso", "1-2-3", 1, 120, 4, 12);
+INSERT INTO `second-game-stats` (username, date1, level1, time1, wrong_prompts, moves) VALUES ("jcfrongoso", "1-3-3", 1, 92, 3, 15);
+INSERT INTO `second-game-stats` (username, date1, level1, time1, wrong_prompts, moves) VALUES ("jcfrongoso", "1-4-3", 1, 783, 2, 18);
+
+INSERT INTO `third-game-stats` (username, date1, level1, time1, character1, wrong_clicks) VALUES ("jcfrongoso", "1-4-3", 1, 113, "Clyde", 18);
+INSERT INTO `third-game-stats` (username, date1, level1, time1, character1, wrong_clicks) VALUES ("jcfrongoso", "1-4-3", 1, 321, "Clyde", 12);
+INSERT INTO `third-game-stats` (username, date1, level1, time1, character1, wrong_clicks) VALUES ("jcfrongoso", "1-4-3", 1, 1276, "Clyde", 14);
