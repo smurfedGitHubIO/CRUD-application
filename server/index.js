@@ -8,24 +8,11 @@ const fs = require('fs');
 app.use(express.json());
 app.use(cors());
 
-// const db = require('./models');
-
-// Routers
-// const postRouter = require('./routes/posts');
-// app.use("/posts", postRouter);
-//const registeredUsersRouter = require('./routes/registered-users');
-//app.use("/auth", registeredUsersRouter);
-
-// db.sequelize.sync().then(() => {
-// });
-
 const db = mysql.createConnection({
 	user: "root",
 	host: "localhost",
 	password: "",
 });
-
-// create database and tables if it doesn't exist yet,,, VERY IMPORTANT
 
 db.connect(() => {
 	var query = "CREATE DATABASE IF NOT EXISTS LEMONS";
@@ -46,19 +33,24 @@ db.connect(() => {
 			query = "CREATE TABLE IF NOT EXISTS `guardians` (`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `connections` VARCHAR(255), PRIMARY KEY (`id`))";
 			db.query(query);
 			//first game stats - emotional game
-			query = "CREATE TABLE IF NOT EXISTS `first-game-stats` (`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `date` VARCHAR(255), `level` INT, `time` INT, `mini_game_time` INT, `win_or_lose` INT, `character` VARCHAR(255), `wrong_answers` INT, PRIMARY KEY (`id`))";
+			query = "CREATE TABLE IF NOT EXISTS `first-game-stats` (`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `date1` VARCHAR(255), `level1` INT, `time1` INT, `mini_game_time` INT, `win_or_lose` INT, `character1` VARCHAR(255), `wrong_answers` INT, PRIMARY KEY (`id`))";
 			db.query(query);
 			//second game stats - communication game
-			query = "CREATE TABLE IF NOT EXISTS `second-game-stats`(`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `date` VARCHAR(255), `level` INT, `time` INT, `wrong-prompts` INT, `moves` INT, PRIMARY KEY (`id`))";
+			query = "CREATE TABLE IF NOT EXISTS `second-game-stats`(`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `date1` VARCHAR(255), `level1` INT, `time1` INT, `wrong_prompts` INT, `moves` INT, PRIMARY KEY (`id`))";
 			db.query(query);
 			//third game stats - behavioural game
-			query = "CREATE TABLE IF NOT EXISTS `third-game-stats`(`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `date` VARCHAR(255), `level` INT, `time` INT, `character` VARCHAR(255), `wrong_clicks` INT, PRIMARY KEY (`id`))";
+			query = "CREATE TABLE IF NOT EXISTS `third-game-stats`(`id` INT AUTO_INCREMENT, `username` VARCHAR(255), `date1` VARCHAR(255), `level1` INT, `time1` INT, `character1` VARCHAR(255), `wrong_clicks` INT, PRIMARY KEY (`id`))";
 			db.query(query);
 		}
 	});
 });
 
-//take note, dapat yung date in terms of month-day-year
+//relevant preliminary code
+
+var current_username = "jcfrongoso";
+var total_time_emotional = 0;
+var total_time_communicational = 0;
+var total_time_behavioural = 0;
 
 //sign up function
 
@@ -105,13 +97,20 @@ app.post('/register-new-user', (req, res) => {
 		);
 	}
 	else{
-		var user_connected = "";
 		db.query("SELECT * FROM `players` WHERE code = '" + connections + "'", function (err, result) {
 				if(err){
 					console.log("No user found!");
 				}
 				else{
-					user_connected = result.username;
+					console.log(result[0].username);
+					fs.writeFile('guardian.txt', result[0].username, (err2) => {
+						if(err2){
+							console.log(err2);
+						}
+						else{
+							console.log("Connection made.");
+						}
+					});
 				}
 			}
 		);
@@ -139,7 +138,7 @@ app.post('/first_game_insert', (req, res) => {
 	const win_or_lose = req.body.win_or_lose;
 	const character = req.body.character;
 	const wrong_answers = req.body.wrong_answers;
-	db.query("INSERT INTO `first-game-stats` (username, date, level, time, mini_game_time, win_or_lose, character, wrong_answers) VALUES (?, ?, ?, ?, ?, ?, ?)", [username, date, level, time, mini_game_time, win_or_lose, character, wrong_answers],
+	db.query("INSERT INTO `first-game-stats` (username, date1, level1, time1, mini_game_time, win_or_lose, character1, wrong_answers) VALUES (?, ?, ?, ?, ?, ?, ?)", [username, date, level, time, mini_game_time, win_or_lose, character, wrong_answers],
 		(err, result) => {
 			if(err){
 				console.log(err);
@@ -160,7 +159,7 @@ app.post('/second_game_insert', (req, res) => {
 	const time = req.body.time;
 	const wrong_prompts = req.body.wrong_prompts;
 	const moves = req.body.moves;
-	db.query("INSERT INTO `second-game-stats` (username, date, level, time, wrong_prompts, moves) VALUES (?, ?, ?, ?, ?, ?)", [username, date, level, time, wrong_prompts, moves],
+	db.query("INSERT INTO `second-game-stats` (username, date1, level1, time1, wrong_prompts, moves) VALUES (?, ?, ?, ?, ?, ?)", [username, date, level, time, wrong_prompts, moves],
 		(err, result) => {
 			if(err){
 				console.log(err);
@@ -181,7 +180,7 @@ app.post('/third_game_insert', (req, res) => {
 	const time = req.body.time;
 	const character = req.body.character;
 	const wrong_clicks = req.body.wrong_clicks;
-	db.query("INSERT INTO `third-game-stats` (username, date, level, time, character, wrong_clicks) VALUES (?, ?, ?, ?, ?, ?, ?)", [username, date, level, time, character, wrong_clicks],
+	db.query("INSERT INTO `third-game-stats` (username, date1, level1, time1, character1, wrong_clicks) VALUES (?, ?, ?, ?, ?, ?, ?)", [username, date, level, time, character, wrong_clicks],
 		(err, result) => {
 			if(err){
 				console.log(err);
@@ -207,9 +206,9 @@ app.post('/login_authentication', (req, res) => {
 			else{
 				res.send(true);
 			}
-			fs.writeFile('username.txt',username, (err) => {
-				if(err){
-					console.log(err);
+			fs.writeFile('username.txt',username, (err3) => {
+				if(err3){
+					console.log(err3);
 				}
 				else{
 					console.log("success");
@@ -266,7 +265,47 @@ app.get('/users_list', (req, res) => {
 	);
 });
 
+//get personal data
+
+app.get('/get_personal_data', (req, res) => {
+	var query = "SELECT * FROM `registered-users` WHERE username = '" + current_username + "'";
+	db.query(query, (err, result) => {
+			if(err){
+				console.log(err);
+			}
+			else{
+				res.send(result[0]);
+			}
+		}
+	);
+});
+
+//get guardian's connection
+
+app.get('/get_guardians_connection', (req, res) => {
+	fs.readFile('guardian.txt', (err, data) => {
+		if(err){
+			throw err;
+		}
+		else{
+			res.send(data.toString());
+		}
+	});
+});
+
 //analysis part
+
+app.get('/get_first_data_sample', (req, res) => {
+	const query = "SELECT * FROM `first-game-stats` WHERE username = '" + current_username + "'";
+	db.query(query, function(err, result){
+		if(err){
+			throw(err);
+		}
+		else{
+			res.send(result);
+		}
+	});
+});
 
 app.get('/get_first_game_data', (req, res) => {
 	const houses = ["joyful", "angry", "disgusted", "fear", "sad", "surprised"];
@@ -275,38 +314,38 @@ app.get('/get_first_game_data', (req, res) => {
 		"whole_game_play_time" : ["The decreasing time that this player spends in playing this game per website use may mean that the player is progressively learning how to respond to people when they are feeling certain emotions. This may also mean the he/she is losing interest in playing the game, maybe because he/she has already learned about the lessons of the game, or because he/she is struggling to play the game - these cases may mean that the player is either a fast or slow learner.", "The increasing time that this player spends in playing this game per website use may mean that the player is struggling to learn how to respond to people when they are feeling certain emotions. This may also mean the he/she is gaining interest in playing the game as time goes by, maybe because he/she is still not contented with what he/she has learned about the lessons of the game or because he/she is struggling to play the game and just likes to challenge himself/herself - these cases may mean that the player is either a fast or slow learner, or that he/she likes to challenge himself/herself.", "Since the amount of time that this player spends in playing the game shows neither an increasing nor decreasing pattern, it may mean that the player gets distracted by external factors while playing the game (e.g. he/she does something else while playing the game at some times), which may mean that the player lacks focus and can be easily distracted while doing a task. It may also mean that the player is struggling to remember and learn how to respond to people when they are feeling certain emotions.", "Insufficient data."],
 		"character_chosen" : ["The uniformity of selections for character n may mean that the player only likes to stick to one option (his/her first choice), perhaps because this is his/her favorite. It may mean that the player is not interested in trying other different things and that he/she likes to follow only one routine. The collected data shows that his/her favorite character is character n, which may be due to the gender of the character or due to the design of the clothes of the character.", "The selections between the two characters may mean that the player likes a little variation and that the player likes to experience something new from time to time; it may also mean that the player is easy to become bored from something. The collected data shows that his/her favorite character is character n, which may be due to the gender of the character or due to the design of the clothes of the character.", "The variation of selections may mean that the player is explorative and that he/she is open to try and experience new things. Also, the collected data shows that his/her favorite character is character n, which may be due to the gender of the character or due to the design of the clothes of the character.", "Insufficient data."]
 	};
-	const name = req.body.name;
-	const query = "SELECT * FROM `first-game-stats` WHERE name = '" + name + "'";
-	db.query(query, function (err, result){
+	const valuable_username = req.name;
+	const query = "SELECT * FROM `first-game-stats` WHERE username = '" + valuable_username + "'";
+	db.query(query, function(err, result){
 		if(err){
-			console.log(err);
+			throw err;
 		}
 		else{
 			//relevant functions
-			function isIncreasingOrDecreasing(listHere){
-				var isIncOrDec = 0;
-				if(listHere.length == 1){
+			function isIncOrDec(listHere){
+				var isIncreasingOrDecreasing = 0;
+				if(listHere.length <= 1){
 					return 3;
 				}
 				for(var i=1; i<listHere.length; i++){
 					if(i == 1){
 						if(listHere[i] > listHere[i-1]){
-							isIncOrDec = 1;
+							isIncreasingOrDecreasing = 1;
 						}
 						else{
-							isIncOrDec = 0;
+							isIncreasingOrDecreasing = 0;
 						}
 					}
 					else{
-						if(listHere[i] >= listHere[i-1] && isIncOrDec == 0){
+						if(listHere[i] >= listHere[i-1] && isIncreasingOrDecreasing == 0){
 							return 2;
 						}
-						else if(listHere[i] <= listHere[i-1] && isIncOrDec == 1){
+						else if(listHere[i] <= listHere[i-1] && isIncreasingOrDecreasing == 1){
 							return 2;
 						}
 					}
 				}
-				return isIncOrDec;
+				return isIncreasingOrDecreasing;
 			}
 			function specialAnalysisPerHouseTotalPlayTime(current_index, level){
 				var ans;
@@ -390,44 +429,45 @@ app.get('/get_first_game_data', (req, res) => {
 			//main loop function
 			for(var i=0; i<result.length; i++){
 				//note: change level to house
-				var level = result[i].level;
-				var time = result[i].time;
-				var date = result[i].date;
-				var character = result[i].character;
-				var wrong_answers = result[i].wrong-answers;
-				var minigame_time = result[i].minigame-time;
-				var win = result[i].win;
-				total_time_emotional += time;
-				timer_per_minigame.push(minigame_time);
-				time_per_house_win_or_lose[level-1].push(time);
-				total_time_for_playing_the_whole_game.push(time);
+				var level1 = result[i].level1;
+				var time1 = result[i].time1;
+				var date1 = result[i].date1;
+				var character1 = result[i].character1;
+				var wrong_answers = result[i].wrong_answers;
+				var minigame_time = result[i].mini_game_time;
+				var win = result[i].win_or_lose;
+				total_time_emotional += time1;
+				time_per_minigame.push(minigame_time);
+				time_per_house_win_or_lose[level1-1].push(time1);
+				total_time_for_playing_the_whole_game.push(time1);
+
 				if(win == 1){
-					time_per_house_win_only[level-1].push(time);
+					time_per_house_win_only[level1-1].push(time1);
 				}
-				if(characters_chosen_count[character] == undefined){
-					characters_chosen_count[character] = 1;
+				if(characters_chosen_count[character1] == undefined){
+					characters_chosen_count[character1] = 1;
 					characters_count += 1;
 				}
 				else{
-					characters_chosen_count[character] += 1;
+					characters_chosen_count[character1] += 1;
 				}
 				if(i == 0){
-					latest_date = date;
-					latest_level = level;
+					latest_date = date1;
+					latest_level = level1;
 					if(win){
-						tries_before_completion_per_house[level-1].push(try_counter);
-						try_counter = 0;
+						tries_before_completion_per_house[level1-1].push(try_counter);
+						try_counter = 1;
 					}
 					else{
-						try_counter += 1;
+						try_counter = 1;
 					}
 					wrong_answers_counter = wrong_answers;
 				}
 				else{
-					if(date == latest_date && latest_level == level){
-						if(win){
-							tries_before_completion_per_house[level-1].push(try_counter);
-							try_counter = 0;
+					if(date1 == latest_date && latest_level == level1){
+						if(win == 1){
+							tries_before_completion_per_house[level1-1].push(try_counter);
+							try_counter = 1;
 						}
 						else{
 							try_counter += 1;
@@ -435,22 +475,23 @@ app.get('/get_first_game_data', (req, res) => {
 						wrong_answers_counter += wrong_answers;
 					}
 					else{
-						latest_date = date;
+						latest_date = date1;
 						number_of_wrong_answers_per_house[latest_level-1].push(wrong_answers_counter/try_counter);
-						latest_level = level;
-						if(win){
-							tries_before_completion_per_house[level-1].push(try_counter);
-							try_counter = 0;
+						latest_level = level1;
+						if(win == 1){
+							tries_before_completion_per_house[level1-1].push(try_counter);
+							try_counter = 1;
 						}
 						else{
 							try_counter += 1;
 						}
 						wrong_answers_counter = wrong_answers;
 					}
+
 				}
 			}
 			//analysis
-			var result_values = {"mini-game-time" : [timer_per_minigame, analysis["mini_game_playtime"][isIncOrDec(timer_per_minigame)]],
+			var result_values = {"mini-game-time" : [time_per_minigame, analysis["mini_game_playtime"][isIncOrDec(time_per_minigame)]],
 			"house-play-time-house-joy" : [time_per_house_win_or_lose[0], specialAnalysisPerHouseTotalPlayTime(isIncOrDec(time_per_house_win_or_lose[0]), 0)],
 			"house-play-time-house-anger" : [time_per_house_win_or_lose[1], specialAnalysisPerHouseTotalPlayTime(isIncOrDec(time_per_house_win_or_lose[1]), 1)],
 			"house-play-time-house-disgust" : [time_per_house_win_or_lose[2], specialAnalysisPerHouseTotalPlayTime(isIncOrDec(time_per_house_win_or_lose[2]), 2)],
@@ -492,38 +533,38 @@ app.get('/get_second_game_data', (req, res) => {
 		"number_of_attempts_per_level" : ["The decreasing number of attempts on this level may mean that this player is losing interest in playing this level, perhaps because he/she is already bored with playing on this level due to its easy difficulty; this may mean that the player's communication and cooperation skills are improving. On the other hand, it may also mean that the player is avoiding this level due to its hard difficulty; in this case, it may mean that the player is avoiding challenges and that he/she avoids tasks that are hard for him to do.", "The increasing number of attempts on this level may mean that this player is gaining interest in playing this level, perhaps because he/she finds this level fun or challenging; this may mean that the player likes to face challenges and that he/she wants to improve himself/herself even more. On the other hand, it may also mean that the player is repeatedly playing this level due to its easy difficulty; in this case, it may mean that the player is avoiding challenges and that he/she prefers to do tasks that are easy for him to do.", "Since the number of attempts on this level shows neither an increasing nor decreasing pattern, it may mean that there are times that the player finds this level easy or fun, while there are also times that he/she does not. In other words, the player's perception on this level is inconsistent.", "Insufficient data."],
 		"average_number_of_moves_per_level" : ["The decreasing average number of moves per attempt on this level may mean that the player is progressively learning how to communicate and cooperate with other people to finish a task, which in this game is a puzzle. This may mean that the player's communication and cooperation skills are improving. This may also mean that the player is progressively memorizing and learning the positions of the puzzle pieces, which may indicate that the player has good memorization skills.", "The increasing average number of moves per attempt on this level may mean that the player is struggling to learn how to properly communicate and cooperate with other people in doing a task. This may mean that the player's cooperation and communication skills are not yet improving. Also, this may mean that the player, and perhaps his/her playmate, is struggling to memorize and learn the positions of the puzzle pieces, which may indicate that the player does not have good memorization skills.", "Since the number of moves per attempt on this level shows neither an increasing nor decreasing pattern, it may mean that there are times that the player finds this level easy, while there are also times that he/she does not. It may also mean that the player's abilities to communicate and cooperate with other people are still inconsistent.", "Insufficient data."]
 	};
-	var res_values; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
-	const query = "SELECT * FROM `second-game-stats` WHERE username = '" + username + "'";
+	const valuable_username = req.name;
+	const query = "SELECT * FROM `second-game-stats` WHERE username = '" + valuable_username + "'";
 	db.query(query, function (err, result){
 		if(err){
 			console.log(err);
 		}
 		else{
 			//relevant functions
-			function isIncreasingOrDecreasing(listHere){
-				var isIncOrDec = 0;
-				if(listHere.length == 1){
+			function isIncOrDec(listHere){
+				var isIncreasingOrDecreasing = 0;
+				if(listHere.length <= 1){
 					return 3;
 				}
 				for(var i=1; i<listHere.length; i++){
 					if(i == 1){
 						if(listHere[i] > listHere[i-1]){
-							isIncOrDec = 1;
+							isIncreasingOrDecreasing = 1;
 						}
 						else{
-							isIncOrDec = 0;
+							isIncreasingOrDecreasing = 0;
 						}
 					}
 					else{
-						if(listHere[i] >= listHere[i-1] && isIncOrDec == 0){
+						if(listHere[i] >= listHere[i-1] && isIncreasingOrDecreasing == 0){
 							return 2;
 						}
-						else if(listHere[i] <= listHere[i-1] && isIncOrDec == 1){
+						else if(listHere[i] <= listHere[i-1] && isIncreasingOrDecreasing == 1){
 							return 2;
 						}
 					}
 				}
-				return isIncOrDec;
+				return isIncreasingOrDecreasing;
 			}
 			//end of relevant functions
 			//relevant variables
@@ -539,10 +580,10 @@ app.get('/get_second_game_data', (req, res) => {
 			//end of relevant variables
 			//main loop
 			for(var i=0; i<result.length; i++){
-				var level = result[i].level;
-				var time = result[i].time;
-				var date = result[i].date;
-				var wrong_prompt = result[i].wrong-prompt;
+				var level = result[i].level1;
+				var time = result[i].time1;
+				var date = result[i].date1;
+				var wrong_prompt = result[i].wrong_prompts;
 				var number_of_moves = result[i].moves;
 				total_time_communicational += time;
 				overall_total_play_time.push(time);
@@ -574,31 +615,33 @@ app.get('/get_second_game_data', (req, res) => {
 					}
 				}
 			}
-			average_play_time_per_level[latest_level-1].push(time_counter_for_current_date/play_counter_for_current_date);
-			wrong_prompts_per_level[latest_level-1].push(wrong_prompt/play_counter_for_current_date);
-			attempts_per_level[latest_level-1].push(play_counter_for_current_date);
-			average_number_of_moves_per_attempt_per_level[latest_level-1].push(number_of_moves_counter_for_current_date/play_counter_for_current_date);
+			if(play_counter_for_current_date != 0){
+				average_play_time_per_level[latest_level-1].push(time_counter_for_current_date/play_counter_for_current_date);
+				wrong_prompts_per_level[latest_level-1].push(wrong_prompt/play_counter_for_current_date);
+				attempts_per_level[latest_level-1].push(play_counter_for_current_date);
+				average_number_of_moves_per_attempt_per_level[latest_level-1].push(number_of_moves_counter_for_current_date/play_counter_for_current_date);
+			}
 			//end of main loop
 			//analysis
 			var result_values = {"whole-game-time" : [overall_total_play_time, analysis["overall_total_play_time"][isIncOrDec(overall_total_play_time)]],
-			"average-play-time-level-1" : [average_play_time_per_level[0], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[0])]],
-			"average-play-time-level-2" : [average_play_time_per_level[1], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[1])]],
-			"average-play-time-level-3" : [average_play_time_per_level[2], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[2])]],
-			"average-play-time-level-4" : [average_play_time_per_level[3], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[3])]],
-			"average-play-time-level-5" : [average_play_time_per_level[4], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[4])]],
-			"average-play-time-level-6" : [average_play_time_per_level[5], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[5])]],
+			"average-play-time-second-game-level-1" : [average_play_time_per_level[0], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[0])]],
+			"average-play-time-second-game-level-2" : [average_play_time_per_level[1], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[1])]],
+			"average-play-time-second-game-level-3" : [average_play_time_per_level[2], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[2])]],
+			"average-play-time-second-game-level-4" : [average_play_time_per_level[3], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[3])]],
+			"average-play-time-second-game-level-5" : [average_play_time_per_level[4], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[4])]],
+			"average-play-time-second-game-level-6" : [average_play_time_per_level[5], analysis["average_play_time_per_level"][isIncOrDec(average_play_time_per_level[5])]],
 			"average-number-of-wrong-prompts-level-1" : [wrong_prompts_per_level[0], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[0])]],
 			"average-number-of-wrong-prompts-level-2" : [wrong_prompts_per_level[1], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[1])]],
 			"average-number-of-wrong-prompts-level-3" : [wrong_prompts_per_level[2], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[2])]],
 			"average-number-of-wrong-prompts-level-4" : [wrong_prompts_per_level[3], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[3])]],
 			"average-number-of-wrong-prompts-level-5" : [wrong_prompts_per_level[4], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[4])]],
 			"average-number-of-wrong-prompts-level-6" : [wrong_prompts_per_level[5], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[5])]],
-			"number-of-attempts-level-1" : [attempts_per_level[0], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[0])]],
-			"number-of-attempts-level-2" : [attempts_per_level[1], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[1])]],
-			"number-of-attempts-level-3" : [attempts_per_level[2], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[2])]],
-			"number-of-attempts-level-4" : [attempts_per_level[3], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[3])]],
-			"number-of-attempts-level-5" : [attempts_per_level[4], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[4])]],
-			"number-of-attempts-level-6" : [attempts_per_level[5], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[5])]],
+			"number-of-attempts-second-game-level-1" : [attempts_per_level[0], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[0])]],
+			"number-of-attempts-second-game-level-2" : [attempts_per_level[1], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[1])]],
+			"number-of-attempts-second-game-level-3" : [attempts_per_level[2], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[2])]],
+			"number-of-attempts-second-game-level-4" : [attempts_per_level[3], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[3])]],
+			"number-of-attempts-second-game-level-5" : [attempts_per_level[4], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[4])]],
+			"number-of-attempts-second-game-level-6" : [attempts_per_level[5], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[5])]],
 			"average-number-of-moves-level-1" : [average_number_of_moves_per_attempt_per_level[0], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[0])]],
 			"average-number-of-moves-level-2" : [average_number_of_moves_per_attempt_per_level[1], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[1])]],
 			"average-number-of-moves-level-3" : [average_number_of_moves_per_attempt_per_level[2], analysis["average_number_of_moves_per_level"][isIncOrDec(average_number_of_moves_per_attempt_per_level[2])]],
@@ -620,39 +663,38 @@ app.get('/get_third_game_data', (req, res) => {
 		"average_number_of_clicks_per_level" : ["The decreasing average number of wrong clicks per attempt on this level may mean that the player is progressively learning how to properly focus on finding the assigned character. This may mean that the player's focus is improving or that he/she is becoming less easy to distract.", "The increasing average number of wrong clicks per attempt on this level may mean that the player is struggling to learn how to properly focus on finding the assigned character. This may mean that the player's focus is not yet improving or that he/she is still easy to distract.", "Since the average number of wrong clicks per attempt on this level shows neither an increasing nor decreasing pattern, it may mean that this player is still struggling to be consistent in focusing on the assigned task to him/her. This may also mean that the player plays this level randomly or that he/she does not seriously play it. Other external factors can also be a factor of this (e.g. the player is doing something else while playing), which may also be due to the player being easily distracted.", "Insufficient data."],
 		"number_of_attempts_per_level" : ["The decreasing number of attempts on this level may mean that the player is losing interest in playing this level, perhaps because he/she is already bored with playing on this level. This may mean that the player's focus is improving or that he/she is becoming less easy to distract. On the other hand, it may also mean that the player is avoiding this level due to the hard difficulty; in this case, it may mean that the player is avoiding challenges and that he/she avoids tasks that are hard for him to do.", "The increasing number of attempts on this level may mean that the player is gaining interest in playing this level, perhaps because he/she finds this level fun or challenging; this may mean that the player likes to face challenges and that he/she wants to improve himself/herself even more. On the other hand, it may also mean that the player is repeatedly playing this level due to the easy difficulty; in this case, it may mean that the player is avoiding challenges and that he/she prefers to do tasks that are easy for him to do.", "Since the number of attempts on this level shows neither an increasing nor decreasing pattern, it may mean that the player's focus is still inconsistent due to him/her having various perceptions on the difficulty of the level. In other words, there are times that the player finds this level as easy or fun, while there are also times that he/she does not.", "Insufficient data."]
 	};
-	const name = req.body.name;
-	var res_values; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
-	const query = "SELECT * FROM `third-game-stats` WHERE username = '" + username + "'";
+	const valuable_username = req.name;
+	const query = "SELECT * FROM `third-game-stats` WHERE username = '" + valuable_username + "'";
 	db.query(query, function (err, result){
 		if(err){
 			console.log(err);
 		}
 		else{
 			//relevant functions
-			function isIncreasingOrDecreasing(listHere){
-				var isIncOrDec = 0;
-				if(listHere.length == 1){
+			function isIncOrDec(listHere){
+				var isIncreasingOrDecreasing = 0;
+				if(listHere.length <= 1){
 					return 3;
 				}
 				for(var i=1; i<listHere.length; i++){
 					if(i == 1){
 						if(listHere[i] > listHere[i-1]){
-							isIncOrDec = 1;
+							isIncreasingOrDecreasing = 1;
 						}
 						else{
-							isIncOrDec = 0;
+							isIncreasingOrDecreasing = 0;
 						}
 					}
 					else{
-						if(listHere[i] >= listHere[i-1] && isIncOrDec == 0){
+						if(listHere[i] >= listHere[i-1] && isIncreasingOrDecreasing == 0){
 							return 2;
 						}
-						else if(listHere[i] <= listHere[i-1] && isIncOrDec == 1){
+						else if(listHere[i] <= listHere[i-1] && isIncreasingOrDecreasing == 1){
 							return 2;
 						}
 					}
 				}
-				return isIncOrDec;
+				return isIncreasingOrDecreasing;
 			}
 			//end of relevant functions
 			//relevant variables
@@ -669,11 +711,11 @@ app.get('/get_third_game_data', (req, res) => {
 			//end of relevant variables
 			//main loop for all values in database
 			for(var i=0; i<result.length; i++){
-				var level = result[i].level;
-				var time = result[i].time;
-				var character = result[i].character;
+				var level = result[i].level1;
+				var time = result[i].time1;
+				var character = result[i].character1;
 				var wrong_clicks = result[i].wrong_clicks;
-				var date = result[i].date;
+				var date = result[i].date1;
 				total_time_behavioural += time;
 				overall_playtime_list_per_level[level-1].push(time);
 				if(characters_chosen_count[character] == undefined){
@@ -699,9 +741,11 @@ app.get('/get_third_game_data', (req, res) => {
 						wrong_clicks_counter_for_current_date += wrong_clicks;
 					}
 					else{
-						playtime_list_per_level_average[latest_level-1].push(time_counter_for_current_date/play_counter_for_current_date);
-						attempts_per_level[latest_level-1].push(play_counter_for_current_date);
-						wrong_clicks_per_level[latest_level-1].push(wrong_clicks_counter_for_current_date/play_counter_for_current_date);
+						if(play_counter_for_current_date != 0){
+							playtime_list_per_level_average[latest_level-1].push(time_counter_for_current_date/play_counter_for_current_date);
+							attempts_per_level[latest_level-1].push(play_counter_for_current_date);
+							wrong_clicks_per_level[latest_level-1].push(wrong_clicks_counter_for_current_date/play_counter_for_current_date);
+						}
 						latest_date = date;
 						latest_level = level;
 						play_counter_for_current_date = 1;
@@ -710,9 +754,11 @@ app.get('/get_third_game_data', (req, res) => {
 					}
 				}
 			}
-			playtime_list_per_level_average[latest_level-1].push(time_counter_for_current_date/play_counter_for_current_date);
-			attempts_per_level[latest_level-1].push(play_counter_for_current_date);
-			wrong_clicks_per_level[latest_level-1].push(wrong_clicks_counter_for_current_date/play_counter_for_current_date);
+			if(play_counter_for_current_date != 0){
+				playtime_list_per_level_average[latest_level-1].push(time_counter_for_current_date/play_counter_for_current_date);
+				attempts_per_level[latest_level-1].push(play_counter_for_current_date);
+				wrong_clicks_per_level[latest_level-1].push(wrong_clicks_counter_for_current_date/play_counter_for_current_date);
+			}
 			//end of main loop for all values in database
 			//analysis
 			var result_values = {"whole-game-time" : [overall_playtime_list_per_level, analysis["total_play_time"][isIncOrDec(overall_playtime_list_per_level)]],
@@ -722,13 +768,7 @@ app.get('/get_third_game_data', (req, res) => {
 			"average-play-time-level-4" : [playtime_list_per_level_average[3], analysis["average_play_time_per_level"][isIncOrDec(playtime_list_per_level_average[3])]],
 			"average-play-time-level-5" : [playtime_list_per_level_average[4], analysis["average_play_time_per_level"][isIncOrDec(playtime_list_per_level_average[4])]],
 			"average-play-time-level-6" : [playtime_list_per_level_average[5], analysis["average_play_time_per_level"][isIncOrDec(playtime_list_per_level_average[5])]],
-			"average-number-of-wrong-prompts-level-1" : [wrong_prompts_per_level[0], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[0])]],
-			"average-number-of-wrong-prompts-level-2" : [wrong_prompts_per_level[1], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[1])]],
-			"average-number-of-wrong-prompts-level-3" : [wrong_prompts_per_level[2], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[2])]],
-			"average-number-of-wrong-prompts-level-4" : [wrong_prompts_per_level[3], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[3])]],
-			"average-number-of-wrong-prompts-level-5" : [wrong_prompts_per_level[4], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[4])]],
-			"average-number-of-wrong-prompts-level-6" : [wrong_prompts_per_level[5], analysis["average_number_of_wrong_prompts_per_level"][isIncOrDec(wrong_prompts_per_level[5])]],
-			"character-chosen" : [],
+			"character-chosen" : [characters_count, analysis["character_chosen"][characters_count]],
 			"number-of-attempts-level-1" : [attempts_per_level[0], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[0])]],
 			"number-of-attempts-level-2" : [attempts_per_level[1], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[1])]],
 			"number-of-attempts-level-3" : [attempts_per_level[2], analysis["number_of_attempts_per_level"][isIncOrDec(attempts_per_level[2])]],
@@ -775,133 +815,44 @@ app.get('/game_conclusions', (req, res) => {
 		second_paragraph = "Meanwhile, this player spent the least time playing the communication game among others, with a total time of " + total_time_communicational + " minutes.";
 		second_conclusion = "This may mean that the player is least interested in the concept of this game among others, which may mean that he/she is least interested in learning how to collaborate with others to finish a certain task, which in this game is a puzzle. On the other hand, this may also mean that the player is struggling to learn about the lessons of this game or is struggling to finish the tasks of the game. Lastly, it may mean that the player finishes the tasks of this game easily, thus he/she only spends a little time to finish them; in this case, it may mean that the player’s ability to communicate and cooperate with other people has improved.";
 	}
-	res.send([first_paragraph, first_conclusion, second_paragraph, second_conclusion]);
+	res.send(first_paragraph + " " + first_conclusion + " " + second_paragraph + " " + second_conclusion);
 });
 
-//to do next is analysis tas gawa ng tables
+app.get('/profile_page_first_game_data', (req, res) => {
+	const query = "SELECT * FROM `first-game-stats` where username = '" + current_username + "'";
+	db.query(query, function (err, result) {
+		if(err){
+			console.log(err);
+		}
+		else{
+			res.send(result);
+		}
+	});
+});
 
-// //first-game-stats getter (emotional)
+app.get('/profile_page_second_game_data', (req, res) => {
+	const query = "SELECT * FROM `second-game-stats` where username = '" + current_username + "'";
+	db.query(query, function (err, result) {
+		if(err){
+			console.log(err);
+		}
+		else{
+			res.send(result);
+		}
+	});
+});
 
-// app.post('/get_first_game_data', (req, res) => {
-// 	const name = req.body.name;
-// 	var res_values;
-// 	const query = "SELECT * FROM first-game-stats WHERE name = " + name;
-// 	db.query(query, function(err, result){
-// 		if(err){
-// 			console.log(err);
-// 		}
-// 		else{
-// 			var games_per_level = [0,0,0,0,0,0,0];
-// 			var total_time_per_level = [0,0,0,0,0,0,0];
-// 			var total_play_time = 0;
-// 			var total_game_attempts = 0;
-// 			var wrong_prompts_per_level = [0,0,0,0,0,0,0];
-// 			var attempts_per_level = [0,0,0,0,0,0,0];
-// 			for(var i=0; i<result.length; i++){
-// 				var level = result.level;
-// 				var time = result.time;
-// 				var wrong_prompts = result.wrong-prompts;
-// 				games_per_level[level-1] += 1;
-// 				total_time_per_level[level-1] += time;
-// 				total_play_time += time;
-// 				total_game_attempts += 1;
-// 				attempts_per_level[level-1] += 1;
-// 				wrong_prompts_per_level[level-1] += wrong_prompts;
-// 			}
-// 			res_values = {};
-// 			res.send(res_values);
-// 		}
-// 	});
-// });
-
-// //second-game-stats getter (communication)
-
-// app.post('/get_second_game_data', (req, res) => {
-// 	const name = req.body.name;
-// 	var res_values; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
-// 	const query = "SELECT * FROM second-game-stats WHERE name = " + name;
-// 	db.query(query, function(err, result){
-// 		if(err){
-// 			console.log(err);
-// 		}
-// 		else{
-// 			var games_per_level = [0,0,0,0,0,0,0];
-// 			var total_time_per_level = [0,0,0,0,0,0,0];
-// 			var total_play_time = 0;
-// 			var total_game_attempts = 0;
-// 			var wrong_prompts_per_level = [0,0,0,0,0,0,0];
-// 			var attempts_per_level = [0,0,0,0,0,0,0];
-// 			for(var i=0; i<result.length; i++){
-// 				var level = result.level;
-// 				var time = result.time;
-// 				var wrong_prompts = result.wrong-prompts;
-// 				games_per_level[level-1] += 1;
-// 				total_time_per_level[level-1] += time;
-// 				total_play_time += time;
-// 				total_game_attempts += 1;
-// 				attempts_per_level[level-1] += 1;
-// 				wrong_prompts_per_level[level-1] += wrong_prompts;
-// 			}
-// 			var average_time_per_level = [0,0,0,0,0,0,0];
-// 			for(var i=0; i<7; i++){
-// 				average_time_per_level[i] = total_time_per_level[i]/attempts_per_level[i];
-// 			}
-// 			res_values = {total_play_time: total_play_time, total_average_play_time: total_play_time/total_game_attempts, average_time_per_level: average_time_per_level, total_time_per_level: total_time_per_level, wrong_prompts_per_level: wrong_prompts_per_level, attempts_per_level: attempts_per_level};
-// 			res.send(res_values);
-// 		}
-// 	});
-// });
-// //hatiin pa yung wrong prompts
-
-// //third-game-stats getter (behavioural)
-
-// app.post('/get_third_game_data', (req, res) => {
-// 	const name = req.body.name;
-// 	var res_values; //average per level, total time for each level, total time, average play time, characters chosen, wrong clicks per level, attempts per level
-// 	const query = "SELECT * FROM third-game-stats WHERE name = " + name;
-// 	db.query(query, function (err, result){
-// 		if(err){
-// 			console.log(err);
-// 		}
-// 		else{
-// 			var games_per_level = [0,0,0,0,0,0,0];
-// 			var time_per_level = [0,0,0,0,0,0,0];
-// 			var total_play_time = 0;
-// 			var total_number_of_games = 0;
-// 			var characters = [];
-// 			var wrong_clicks = [0,0,0,0,0,0,0];
-// 			var attempts_per_level = [0,0,0,0,0,0,0];
-// 			res.send(result);
-// 			for(var i=0; i<result.length; i++){
-// 				var level = result[i].level;
-// 				var time = result[i].time;
-// 				var character = result[i].character;
-// 				var wrong_clicks = result[i].wrong-clicks;
-// 				games_per_level[level-1] += 1;
-// 				time_per_level[level-1] += time;
-// 				var checker = false;
-// 				for(var j=0; j<characters.length; j++){
-// 					if(characters[i] == character){
-// 						checker = true;
-// 					}
-// 				}
-// 				if(!checker){
-// 					characters.push(character);
-// 				}
-// 				wrong_clicks[level-1] += wrong-clicks;
-// 			}
-// 			var average_time_per_level = [0,0,0,0,0,0,0];
-// 			for(var i=0; i<7; i++){
-// 				average_time_per_level[i] = time_per_level[i]/games_per_level[i];
-// 				total_play_time += time_per_level[i];
-// 				total_number_of_games += games_per_level[i];
-// 			}
-// 			res_values = {average_time_per_level:average_time_per_level, time_per_level:time_per_level, total_play_time:total_play_time, total_average_play_time: total_play_time/total_number_of_games,characters:characters,wrong_clicks:wrong_clicks};
-// 			res.send(res_values);
-// 		}
-// 	});
-// });
-//di ko gets Number of attempts per level (kasi pwede balikan ang completed na) – average per game use and total since account creation
+app.get('/profile_page_third_game_data', (req, res) => {
+	const query = "SELECT * FROM `third-game-stats` where username = '" + current_username + "'";
+	db.query(query, function (err, result) {
+		if(err){
+			console.log(err);
+		}
+		else{
+			res.send(result);
+		}
+	});
+});
 
 app.listen(3002, () => {
 	console.log("Server running on port 3002.");
