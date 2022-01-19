@@ -69,25 +69,50 @@ function App() {
 				name: resp.data
 			}).then((resp2) => {
 				console.log(resp2.data);
-				document.getElementById('whole-game-time').innerHTML = resp2.data["whole-game-time"][1];
-				document.getElementById('average-play-time-level-1').innerHTML = resp2.data["average-play-time-level-1"][1];
-				document.getElementById('average-play-time-level-2').innerHTML = resp2.data["average-play-time-level-2"][1];
-				document.getElementById('average-play-time-level-3').innerHTML = resp2.data["average-play-time-level-3"][1];
-				document.getElementById('average-play-time-level-4').innerHTML = resp2.data["average-play-time-level-4"][1];
-				document.getElementById('average-play-time-level-5').innerHTML = resp2.data["average-play-time-level-5"][1];
-				document.getElementById('average-play-time-level-6').innerHTML = resp2.data["average-play-time-level-6"][1];
+				document.getElementById('whole-game-time-second-game1').innerHTML = "Whole Game Time";
+				document.getElementById('average-play-time-second-game-level-11').innerHTML = "Average Play Time (Level 1)";
+				document.getElementById('average-play-time-second-game-level-21').innerHTML = "Average Play Time (Level 2)";
+				document.getElementById('average-play-time-second-game-level-31').innerHTML = "Average Play Time (Level 3)";
+				document.getElementById('average-play-time-second-game-level-41').innerHTML = "Average Play Time (Level 4)";
+				document.getElementById('average-play-time-second-game-level-51').innerHTML = "Average Play Time (Level 5)";
+				document.getElementById('average-play-time-second-game-level-61').innerHTML = "Average Play Time (Level 6)";
+				document.getElementById('average-number-of-wrong-prompts-level-11').innerHTML = "Average Number of Wrong Prompts (Level 1)";
+				document.getElementById('average-number-of-wrong-prompts-level-21').innerHTML = "Average Number of Wrong Prompts (Level 2)";
+				document.getElementById('average-number-of-wrong-prompts-level-31').innerHTML = "Average Number of Wrong Prompts (Level 3)";
+				document.getElementById('average-number-of-wrong-prompts-level-41').innerHTML = "Average Number of Wrong Prompts (Level 4)";
+				document.getElementById('average-number-of-wrong-prompts-level-51').innerHTML = "Average Number of Wrong Prompts (Level 5)";
+				document.getElementById('average-number-of-wrong-prompts-level-61').innerHTML = "Average Number of Wrong Prompts (Level 6)";
+				document.getElementById('number-of-attempts-second-game-level-11').innerHTML = "Average Number of Attempts (Level 1)";
+				document.getElementById('number-of-attempts-second-game-level-21').innerHTML = "Average Number of Attempts (Level 2)";
+				document.getElementById('number-of-attempts-second-game-level-31').innerHTML = "Average Number of Attempts (Level 3)";
+				document.getElementById('number-of-attempts-second-game-level-41').innerHTML = "Average Number of Attempts (Level 4)";
+				document.getElementById('number-of-attempts-second-game-level-51').innerHTML = "Average Number of Attempts (Level 5)";
+				document.getElementById('number-of-attempts-second-game-level-61').innerHTML = "Average Number of Attempts (Level 6)";
+				document.getElementById('average-number-of-moves-level-11').innerHTML = "Average Number of Moves (Level 1)";
+				document.getElementById('average-number-of-moves-level-21').innerHTML = "Average Number of Moves (Level 2)";
+				document.getElementById('average-number-of-moves-level-31').innerHTML = "Average Number of Moves (Level 3)";
+				document.getElementById('average-number-of-moves-level-41').innerHTML = "Average Number of Moves (Level 4)";
+				document.getElementById('average-number-of-moves-level-51').innerHTML = "Average Number of Moves (Level 5)";
+				document.getElementById('average-number-of-moves-level-61').innerHTML = "Average Number of Moves (Level 6)";
+				document.getElementById('whole-game-time-second-game').innerHTML = resp2.data["whole-game-time"][1];
+				document.getElementById('average-play-time-second-game-level-1').innerHTML = resp2.data["average-play-time-second-game-level-1"][1];
+				document.getElementById('average-play-time-second-game-level-2').innerHTML = resp2.data["average-play-time-second-game-level-2"][1];
+				document.getElementById('average-play-time-second-game-level-3').innerHTML = resp2.data["average-play-time-second-game-level-3"][1];
+				document.getElementById('average-play-time-second-game-level-4').innerHTML = resp2.data["average-play-time-second-game-level-4"][1];
+				document.getElementById('average-play-time-second-game-level-5').innerHTML = resp2.data["average-play-time-second-game-level-5"][1];
+				document.getElementById('average-play-time-second-game-level-6').innerHTML = resp2.data["average-play-time-second-game-level-6"][1];
 				document.getElementById('average-number-of-wrong-prompts-level-1').innerHTML = resp2.data["average-number-of-wrong-prompts-level-1"][1];
 				document.getElementById('average-number-of-wrong-prompts-level-2').innerHTML = resp2.data["average-number-of-wrong-prompts-level-2"][1];
 				document.getElementById('average-number-of-wrong-prompts-level-3').innerHTML = resp2.data["average-number-of-wrong-prompts-level-3"][1];
 				document.getElementById('average-number-of-wrong-prompts-level-4').innerHTML = resp2.data["average-number-of-wrong-prompts-level-4"][1];
 				document.getElementById('average-number-of-wrong-prompts-level-5').innerHTML = resp2.data["average-number-of-wrong-prompts-level-5"][1];
 				document.getElementById('average-number-of-wrong-prompts-level-6').innerHTML = resp2.data["average-number-of-wrong-prompts-level-6"][1];
-				document.getElementById('number-of-attempts-level-1').innerHTML = resp2.data["number-of-attempts-level-1"][1];
-				document.getElementById('number-of-attempts-level-2').innerHTML = resp2.data["number-of-attempts-level-2"][1];
-				document.getElementById('number-of-attempts-level-3').innerHTML = resp2.data["number-of-attempts-level-3"][1];
-				document.getElementById('number-of-attempts-level-4').innerHTML = resp2.data["number-of-attempts-level-4"][1];
-				document.getElementById('number-of-attempts-level-5').innerHTML = resp2.data["number-of-attempts-level-5"][1];
-				document.getElementById('number-of-attempts-level-6').innerHTML = resp2.data["number-of-attempts-level-6"][1];
+				document.getElementById('number-of-attempts-second-game-level-1').innerHTML = resp2.data["number-of-attempts-second-game-level-1"][1];
+				document.getElementById('number-of-attempts-second-game-level-2').innerHTML = resp2.data["number-of-attempts-second-game-level-2"][1];
+				document.getElementById('number-of-attempts-second-game-level-3').innerHTML = resp2.data["number-of-attempts-second-game-level-3"][1];
+				document.getElementById('number-of-attempts-second-game-level-4').innerHTML = resp2.data["number-of-attempts-second-game-level-4"][1];
+				document.getElementById('number-of-attempts-second-game-level-5').innerHTML = resp2.data["number-of-attempts-second-game-level-5"][1];
+				document.getElementById('number-of-attempts-second-game-level-6').innerHTML = resp2.data["number-of-attempts-second-game-level-6"][1];
 				document.getElementById('average-number-of-moves-level-1').innerHTML = resp2.data["average-number-of-moves-level-1"][1];
 				document.getElementById('average-number-of-moves-level-2').innerHTML = resp2.data["average-number-of-moves-level-2"][1];
 				document.getElementById('average-number-of-moves-level-3').innerHTML = resp2.data["average-number-of-moves-level-3"][1];
@@ -100,81 +125,106 @@ function App() {
 	return (
 		<div>
 		<button onClick = {get_user}>Analyze Data</button>
-		<div> Whole Game Time
-			<p id="whole-game-time"></p>
-		</div>
-		<div> Average Play Time (Level 1)
-			<p id="average-play-time-level-1"></p>
-		</div>
-		<div> Average Play Time (Level 2)
-			<p id="average-play-time-level-2"></p>
-		</div>
-		<div> Average Play Time (Level 3)
-			<p id="average-play-time-level-3"></p>
-		</div>
-		<div> Average Play Time (Level 4)
-			<p id="average-play-time-level-4"></p>
-		</div>
-		<div> Average Play Time (Level 5)
-			<p id="average-play-time-level-5"></p>
-		</div>
-		<div> Average Play Time (Level 6)
-			<p id="average-play-time-level-6"></p>
-		</div>
-		<div> Average Number of Wrong Prompts (Level 1)
-			<p id="average-number-of-wrong-prompts-level-1"></p>
-		</div>
-		<div> Average Number of Wrong Prompts (Level 2)
-			<p id="average-number-of-wrong-prompts-level-2"></p>
-		</div>
-		<div> Average Number of Wrong Prompts (Level 3)
-			<p id="average-number-of-wrong-prompts-level-3"></p>
-		</div>
-		<div> Average Number of Wrong Prompts (Level 4)
-			<p id="average-number-of-wrong-prompts-level-4"></p>
-		</div>
-		<div> Average Number of Wrong Prompts (Level 5)
-			<p id="average-number-of-wrong-prompts-level-5"></p>
-		</div>
-		<div> Average Number of Wrong Prompts (Level 6)
-			<p id="average-number-of-wrong-prompts-level-6"></p>
-		</div>
-		<div> Average Number of Attempts (Level 1)
-			<p id="number-of-attempts-level-1"></p>
-		</div>
-		<div> Average Number of Attempts (Level 2)
-			<p id="number-of-attempts-level-2"></p>
-		</div>
-		<div> Average Number of Attempts (Level 3)
-			<p id="number-of-attempts-level-3"></p>
-		</div>
-		<div> Average Number of Attempts (Level 4)
-			<p id="number-of-attempts-level-4"></p>
-		</div>
-		<div> Average Number of Attempts (Level 5)
-			<p id="number-of-attempts-level-5"></p>
-		</div>
-		<div> Average Number of Attempts (Level 6)
-			<p id="number-of-attempts-level-6"></p>
-		</div>
-		<div> Average Number of Moves (Level 1)
-			<p id="average-number-of-moves-level-1"></p>
-		</div>
-		<div> Average Number of Moves (Level 2)
-			<p id="average-number-of-moves-level-2"></p>
-		</div>
-		<div> Average Number of Moves (Level 3)
-			<p id="average-number-of-moves-level-3"></p>
-		</div>
-		<div> Average Number of Moves (Level 4)
-			<p id="average-number-of-moves-level-4"></p>
-		</div>
-		<div> Average Number of Moves (Level 5)
-			<p id="average-number-of-moves-level-5"></p>
-		</div>
-		<div> Average Number of Moves (Level 6)
-			<p id="average-number-of-moves-level-6"></p>
-		</div>
+			<div class="boxes">
+				<p id="whole-game-time1"></p>
+				<p id="whole-game-time"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-play-time-second-game-level-11"></p>
+				<p id="average-play-time-second-game-level-1"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-play-time-second-game-level-21"></p>
+				<p id="average-play-time-second-game-level-2"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-play-time-second-game-level-31"></p>
+				<p id="average-play-time-second-game-level-3"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-play-time-second-game-level-41"></p>
+				<p id="average-play-time-second-game-level-4"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-play-time-second-game-level-51"></p>
+				<p id="average-play-time-second-game-level-5"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-play-time-second-game-level-61"></p>
+				<p id="average-play-time-second-game-level-6"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-wrong-prompts-level-11"></p>
+				<p id="average-number-of-wrong-prompts-level-1"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-wrong-prompts-level-21"></p>
+				<p id="average-number-of-wrong-prompts-level-2"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-wrong-prompts-level-31"></p>
+				<p id="average-number-of-wrong-prompts-level-3"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-wrong-prompts-level-41"></p>
+				<p id="average-number-of-wrong-prompts-level-4"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-wrong-prompts-level-51"></p>
+				<p id="average-number-of-wrong-prompts-level-5"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-wrong-prompts-level-61"></p>
+				<p id="average-number-of-wrong-prompts-level-6"></p>
+			</div>
+			<div class="boxes">
+				<p id="number-of-attempts-second-game-level-11"></p>
+				<p id="number-of-attempts-second-game-level-1"></p>
+			</div>
+			<div class="boxes">
+				<p id="number-of-attempts-second-game-level-21"></p>
+				<p id="number-of-attempts-second-game-level-2"></p>
+			</div>
+			<div class="boxes">
+				<p id="number-of-attempts-second-game-level-31"></p>
+				<p id="number-of-attempts-second-game-level-3"></p>
+			</div>
+			<div class="boxes">
+				<p id="number-of-attempts-second-game-level-41"></p>
+				<p id="number-of-attempts-second-game-level-4"></p>
+			</div>
+			<div class="boxes">
+				<p id="number-of-attempts-second-game-level-51"></p>
+				<p id="number-of-attempts-second-game-level-5"></p>
+			</div>
+			<div class="boxes">
+				<p id="number-of-attempts-second-game-level-61"></p>
+				<p id="number-of-attempts-second-game-level-6"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-moves-level-11"></p>
+				<p id="average-number-of-moves-level-1"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-moves-level-21"></p>
+				<p id="average-number-of-moves-level-2"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-moves-level-31"></p>
+				<p id="average-number-of-moves-level-3"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-moves-level-41"></p>
+				<p id="average-number-of-moves-level-4"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-moves-level-51"></p>
+				<p id="average-number-of-moves-level-5"></p>
+			</div>
+			<div class="boxes">
+				<p id="average-number-of-moves-level-61"></p>
+				<p id="average-number-of-moves-level-6"></p>
+			</div>
 		</div>
 	);
 }

@@ -69,6 +69,33 @@ function App() {
 				name: resp.data
 			}).then((resp2) => {
 				setFirstgamedata(resp2.data);
+				document.getElementById('game-play-time11').innerHTML = "Overall Play Time";
+				document.getElementById('mini-game-time1').innerHTML = "Mini game time";
+				document.getElementById('house-play-time-house-joy1').innerHTML = "House Play Time (Joy)";
+				document.getElementById('house-play-time-house-anger1').innerHTML = "House Play Time (Anger)";
+				document.getElementById('house-play-time-house-disgust1').innerHTML = "House Play Time (Disgust)";
+				document.getElementById('house-play-time-house-fear1').innerHTML = "House Play Time (Fear)";
+				document.getElementById('house-play-time-house-sadness1').innerHTML = "House Play Time (Sadness)";
+				document.getElementById('house-play-time-house-surprise1').innerHTML = "House Play Time (Surprise)";
+				document.getElementById('house-play-time-win-only-house-joy1').innerHTML = "House Play Time (Joy, Win Only)";
+				document.getElementById('house-play-time-win-only-house-anger1').innerHTML = "House Play Time (Anger, Win Only)";
+				document.getElementById('house-play-time-win-only-house-disgust1').innerHTML = "House Play Time (Disgust, Win Only)";
+				document.getElementById('house-play-time-win-only-house-fear1').innerHTML = "House Play Time (Fear, Win Only)";
+				document.getElementById('house-play-time-win-only-house-sadness1').innerHTML = "House Play Time (Sadness, Win Only)";
+				document.getElementById('house-play-time-win-only-house-surprise1').innerHTML = "House Play Time (Surprise, Win Only)";
+				document.getElementById('character-chosen1').innerHTML = "Character Chosen";
+				document.getElementById('tries-before-completion-house-joy1').innerHTML = "Tries Before Completion (Joy)";
+				document.getElementById('tries-before-completion-house-anger1').innerHTML = "Tries Before Completion (Anger)";
+				document.getElementById('tries-before-completion-house-disgust1').innerHTML = "Tries Before Completion (Disgust)";
+				document.getElementById('tries-before-completion-house-fear1').innerHTML = "Tries Before Completion (Fear)";
+				document.getElementById('tries-before-completion-house-sadness1').innerHTML = "Tries Before Completion (Sadness)";
+				document.getElementById('tries-before-completion-house-surprise1').innerHTML = "Tries Before Completion (Surprise)";
+				document.getElementById('wrong-answers-per-attempt-house-joy1').innerHTML = "Wrong Answers Per Attempt (Joy)";
+				document.getElementById('wrong-answers-per-attempt-house-anger1').innerHTML = "Wrong Answers Per Attempt (Anger)";
+				document.getElementById('wrong-answers-per-attempt-house-disgust1').innerHTML = "Wrong Answers Per Attempt (Disgust)";
+				document.getElementById('wrong-answers-per-attempt-house-fear1').innerHTML = "Wrong Answers Per Attempt (Fear)";
+				document.getElementById('wrong-answers-per-attempt-house-sadness1').innerHTML = "Wrong Answers Per Attempt (Sadness)";
+				document.getElementById('wrong-answers-per-attempt-house-surprise1').innerHTML = "Wrong Answers Per Attempt (Surprise)";
 				document.getElementById('game-play-time1').innerHTML = resp2.data["game-play-time"][1];
 				document.getElementById('mini-game-time').innerHTML = resp2.data["mini-game-time"][1];
 				document.getElementById('house-play-time-house-joy').innerHTML = resp2.data["house-play-time-house-joy"][1];
@@ -102,85 +129,112 @@ function App() {
 	return (
 		<div>
 		<button onClick = {get_user}>Analyze Data</button>
-		<div>Total play time
+		<div class="boxes">
+			<p id="game-play-time11"></p>
 			<p id="game-play-time1"></p>
 		</div>
-		<div>Mini game time
+		<div class="boxes">
+			<p id="mini-game-time1"></p>
 			<p id="mini-game-time"></p>
 		</div>
-		<div>House Play Time (Joy)
+		<div class="boxes">
+			<p id="house-play-time-house-joy1"></p>
 			<p id="house-play-time-house-joy"></p>
 		</div>
-		<div>House Play Time (Anger)
+		<div class="boxes">
+			<p id="house-play-time-house-anger1"></p>
 			<p id="house-play-time-house-anger"></p>
 		</div>
-		<div>House Play Time (Disgust)
+		<div class="boxes">
+			<p id="house-play-time-house-disgust1"></p>
 			<p id="house-play-time-house-disgust"></p>
 		</div>
-		<div>House Play Time (Fear)
+		<div class="boxes">
+			<p id="house-play-time-house-fear1"></p>
 			<p id="house-play-time-house-fear"></p>
 		</div>
-		<div>House Play Time (Sadness)
+		<div class="boxes">
+			<p id="house-play-time-house-sadness1"></p>
 			<p id="house-play-time-house-sadness"></p>
 		</div>
-		<div>House Play Time (Surprise)
+		<div class="boxes">
+			<p id="house-play-time-house-surprise1"></p>
 			<p id="house-play-time-house-surprise"></p>
 		</div>
-		<div>House Play Time (Joy, Win Only)
+		<div class="boxes">
+			<p id="house-play-time-win-only-house-joy1"></p>
 			<p id="house-play-time-win-only-house-joy"></p>
 		</div>
-		<div>House Play Time (Anger, Win Only)
+		<div class="boxes">
+			<p id="house-play-time-win-only-house-anger1"></p>
 			<p id="house-play-time-win-only-house-anger"></p>
 		</div>
-		<div>House Play Time (Disgust, Win Only)
+		<div class="boxes">
+			<p id="house-play-time-win-only-house-disgust1"></p>
 			<p id="house-play-time-win-only-house-disgust"></p>
 		</div>
-		<div>House Play Time (Fear, Win Only)
+		<div class="boxes">
+			<p id="house-play-time-win-only-house-fear1"></p>
 			<p id="house-play-time-win-only-house-fear"></p>
 		</div>
-		<div>House Play Time (Sadness, Win Only)
+		<div class="boxes">
+			<p id="house-play-time-win-only-house-sadness1"></p>
 			<p id="house-play-time-win-only-house-sadness"></p>
 		</div>
-		<div>House Play Time (Surprise, Win Only)
+		<div class="boxes">
+			<p id="house-play-time-win-only-house-surprise1"></p>
 			<p id="house-play-time-win-only-house-surprise"></p>
 		</div>
-		<div>Character Chosen
+		<div class="boxes">
+			<p id="character-chosen1"></p>
 			<p id="character-chosen"></p>
 		</div>
-		<div>Tries Before Completion (Joy)
+		<div class="boxes">
+			<p id="tries-before-completion-house-joy1"></p>
 			<p id="tries-before-completion-house-joy"></p>
 		</div>
-		<div>Tries Before Completion (Anger)
+		<div class="boxes">
+			<p id="tries-before-completion-house-anger1"></p>
 			<p id="tries-before-completion-house-anger"></p>
 		</div>
-		<div>Tries Before Completion (Disgust)
+		<div class="boxes">
+			<p id="tries-before-completion-house-disgust1"></p>
 			<p id="tries-before-completion-house-disgust"></p>
 		</div>
-		<div>Tries Before Completion (Fear)
+		<div class="boxes">
+			<p id="tries-before-completion-house-fear1"></p>
 			<p id="tries-before-completion-house-fear"></p>
 		</div>
-		<div>Tries Before Completion (Sadness)
+		<div class="boxes">
+			<p id="tries-before-completion-house-sadness1"></p>
 			<p id="tries-before-completion-house-sadness"></p>
 		</div>
-		<div>Tries Before Completion (Surprise)
+		<div class="boxes">
+			<p id="tries-before-completion-house-surprise1"></p>
 			<p id="tries-before-completion-house-surprise"></p>
 		</div>
-		<div>Wrong Answers Per Attempt (Joy)
+		<div class="boxes">
+			<p id="wrong-answers-per-attempt-house-joy1"></p>
 			<p id="wrong-answers-per-attempt-house-joy"></p>
 		</div>
-		<div>Wrong Answers Per Attempt (Anger)
+		<div class="boxes">
+			<p id="wrong-answers-per-attempt-house-anger1"></p>
 			<p id="wrong-answers-per-attempt-house-anger"></p>
 		</div>
-		<div>Wrong Answers Per Attempt (Disgust)
+		<div class="boxes">
+			<p id="wrong-answers-per-attempt-house-disgust1"></p>
 			<p id="wrong-answers-per-attempt-house-disgust"></p>
 		</div>
-		<div>Wrong Answers Per Attempt (Fear)
+		<div class="boxes">
+			<p id="wrong-answers-per-attempt-house-fear1"></p>
 			<p id="wrong-answers-per-attempt-house-fear"></p>
 		</div>
-		<div>Wrong Answers Per Attempt (Sadness)
+		<div class="boxes">
+			<p id="wrong-answers-per-attempt-house-sadness1"></p>
 			<p id="wrong-answers-per-attempt-house-sadness"></p>
 		</div>
-		<div>Wrong Answers Per Attempt (Surprise)
+		<div class="boxes">
+			<p id="wrong-answers-per-attempt-house-surprise1"></p>
 			<p id="wrong-answers-per-attempt-house-surprise"></p>
 		</div>
 		</div>
