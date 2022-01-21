@@ -11,3 +11,4 @@ Sample CRUD application using NodeJS, MySQL and React. Prerequisites for LEMONS 
 - (January 18, 2021) Major work updates in back-end side.
 - (January 19, 2021) Major work updates in back-end side.
 - (January 20, 2021) Major work updates in back-end side.
+- (January 21, 2021) Almost done on work. Gotta finish progress and history page.
