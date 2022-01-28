@@ -15,5 +15,6 @@ Sample CRUD application using NodeJS, MySQL and React. Prerequisites for LEMONS 
 - (January 22, 2021) Last grind bud.
 - (January 23, 2021) Finally done with the work.
 - (January 27, 2021) Working with the researchers.
+- (January 28, 2021) Done.
 
 Check `clclyde/clclyde` repository for more information.
